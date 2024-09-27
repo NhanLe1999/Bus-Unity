@@ -38,6 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
+  m_IndirectSpecularColor: {r: 0.17782128, g: 0.22263679, b: 0.30478644, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -552,6 +553,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2055753721}
     m_Modifications:
+    - target: {fileID: 1713468855316481, guid: 257cf05a1f79f8d459ffa785ffbfeb8a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1868662986645485, guid: 257cf05a1f79f8d459ffa785ffbfeb8a, type: 3}
       propertyPath: m_Name
       value: cpi_1 Van_SixSeater (11)
@@ -707,10 +712,20 @@ PrefabInstance:
       propertyPath: vehicles.Array.data[3]
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 59909770109854862, guid: dd027482b8e423e4b8054ca9735017a9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2238777642978440292, guid: dd027482b8e423e4b8054ca9735017a9,
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -52.47461
+      objectReference: {fileID: 0}
+    - target: {fileID: 5600629761681752999, guid: dd027482b8e423e4b8054ca9735017a9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd027482b8e423e4b8054ca9735017a9, type: 3}

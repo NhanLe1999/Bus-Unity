@@ -18,6 +18,8 @@ namespace TJ.Scripts
         public bool isFull = false;
         public Vector3 originalPosition;
         public List<GameObject> removableParts;
+        public List<GameObject> openvableParts;
+
         public Vector3 ogScale;
         public Vector3 newScale;
         public int playersInSeat = 0;
@@ -79,7 +81,7 @@ namespace TJ.Scripts
         private void OnMouseDown()
         {
             Debug.Log("Mouse" + "moving:" + isMovingStraight + "");
-            if (isMovingStraight || GameManager.instance.gameOver || EventSystem.current.IsPointerOverGameObject())
+            if (isMovingStraight /*|| GameManager.instance.gameOver*/ || EventSystem.current.IsPointerOverGameObject())
                 return;
             if (garage != null && !garage.canMoveNext)
                 return;
@@ -213,7 +215,7 @@ namespace TJ.Scripts
 
             Debug.DrawLine(transform.position, worldPoint, Color.green);
             movingZdir = transform.DOMove(worldPoint, 12f).SetSpeedBased();
-            GetComponent<AudioSource>().enabled = true;
+           // GetComponent<AudioSource>().enabled = true;
         }
         public bool CheckForObstacles()
         {
@@ -267,25 +269,6 @@ namespace TJ.Scripts
             }
 
             return false;
-
-            /*hitInfo = new RaycastHit();
-            // Get the vehicle's BoxCollider
-            BoxCollider boxCollider = GetComponent<BoxCollider>();
-            // Calculate the CheckForObstacles parameters
-            Vector3 boxCenter = transform.position + transform.TransformDirection(boxCollider.center);
-            Vector3 boxHalfExtents = boxCollider.size / 2;
-            Vector3 direction = transform.TransformDirection(Vector3.forward);
-            float rayDistance = distance;
-            // Perform the CheckForObstacles
-            if (Physics.CheckForObstacles(boxCenter, boxHalfExtents, direction, out hitInfo, transform.rotation, rayDistance))
-            {
-                if (hitInfo.collider.TryGetComponent(out Vehicle vehicle) && vehicle.canCollideWitOtherVehicle)
-                {
-                    Debug.Log("Vehicle detected in front!");
-                    return true;
-                }
-            }
-            return false;*/
         }
 
         private void StrikeAndMoveBack(Vehicle targetVehicle)
@@ -419,6 +402,11 @@ namespace TJ.Scripts
                 foreach (var parts in removableParts)
                 {
                     parts.SetActive(false);
+                }
+
+                foreach (var parts in openvableParts)
+                {
+                    parts.SetActive(true);
                 }
             });
         }

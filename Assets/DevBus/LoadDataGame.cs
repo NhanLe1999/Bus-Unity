@@ -12,6 +12,8 @@ public class LoadDataGame : MonoBehaviour
     [SerializeField] GameObject prefabVan;
     [SerializeField] GameObject prefabBus;
 
+    [SerializeField] Transform parent;
+
 
     // Start is called before the first frame update
     void Start()
@@ -20,7 +22,7 @@ public class LoadDataGame : MonoBehaviour
         {
             var obj = GetObjectIntanceBus(da.type);
 
-            var objIn = Instantiate(obj, null);
+            var objIn = Instantiate(obj, parent);
             //  var cpn = objIn.GetComponent<Vehicle>();
 
             //  cpn.StartCoroutine(cpn.SetPoint(da.position));

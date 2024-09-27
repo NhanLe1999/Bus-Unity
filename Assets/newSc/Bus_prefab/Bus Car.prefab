@@ -3112,9 +3112,10 @@ GameObject:
   - component: {fileID: 4789494125700016}
   - component: {fileID: 114108553174728864}
   - component: {fileID: 65355284142570889}
+  - component: {fileID: 1628294027733849384}
   m_Layer: 8
   m_Name: Bus Car
-  m_TagString: Untagged
+  m_TagString: Vehicle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3196,8 +3197,40 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 2}
+  m_Size: {x: 0.14, y: 0.12, z: 0.22}
   m_Center: {x: 0, y: 0.0376759, z: 0}
+--- !u!114 &1628294027733849384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1734417577457651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96a816db365b12846a835107750732d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vehicleColor: 0
+  seats:
+  - {fileID: 4864815245968831}
+  - {fileID: 4718962579049761}
+  - {fileID: 4640581871166411}
+  - {fileID: 4432954796800879}
+  vehMesh: []
+  isFull: 0
+  originalPosition: {x: 0, y: 0, z: 0}
+  removableParts:
+  - {fileID: 1813516537272720}
+  - {fileID: 1200441709705078}
+  openvableParts:
+  - {fileID: 1867221888863632}
+  - {fileID: 1080132183749797}
+  ogScale: {x: 0, y: 0, z: 0}
+  newScale: {x: 0, y: 0, z: 0}
+  playersInSeat: 0
+  isMovingForward: 0
+  garage: {fileID: 0}
 --- !u!1 &1813516537272720
 GameObject:
   m_ObjectHideFlags: 0
