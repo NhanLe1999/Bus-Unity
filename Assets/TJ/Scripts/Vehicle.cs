@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
@@ -53,15 +54,21 @@ namespace TJ.Scripts
             ogScale = transform.localScale;
             isMovingStraight = false;
             Vector3 currentRotation = transform.rotation.eulerAngles;
-            transform.rotation = Quaternion.Euler(0, currentRotation.y, 0);
+          //  transform.rotation = Quaternion.Euler(0, currentRotation.y, 0);
             //UpdateSeatCountNo();
             //UpdatePlayerSeat = SeatCount;
+        }
+
+        public IEnumerator SetPoint(Vector3 point)
+        {
+            yield return new WaitForSeconds(0.25f);
+            this.transform.position = point;
         }
 
         private void OnValidate()
         {
             Vector3 currentRotation = transform.rotation.eulerAngles;
-            transform.rotation = Quaternion.Euler(0, currentRotation.y, 0);
+            //transform.rotation = Quaternion.Euler(0, currentRotation.y, 0);
         }
 
         public void SetInitialPosition()
