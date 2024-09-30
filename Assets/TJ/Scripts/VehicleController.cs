@@ -28,6 +28,20 @@ namespace TJ.Scripts
             instance = this;
             VehiclesMaterialHolder.InitializeMaterialDictionary();
             stickmanMaterialHolder.InitializeMaterialDictionary();
+
+            if (shuffle == true)
+                vehicles = GetComponentsInChildren<Vehicle>(true);
+
+            if(vehicles.Length > 0)
+            {
+                RandomVehColor();
+                CalculatePlayersCount();
+                CalculateTotalSeat();
+            }
+        }
+
+        public void Init()
+        {
             if (shuffle == true)
                 vehicles = GetComponentsInChildren<Vehicle>(true);
             RandomVehColor();

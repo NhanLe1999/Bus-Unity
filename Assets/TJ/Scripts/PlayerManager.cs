@@ -28,6 +28,10 @@ namespace TJ.Scripts
         public List<Vector3> pointsBetweenMidAndSpawn;
         public List<Vector3> allPoints;
 
+        public int TotalPlayer = 24;
+        public int numMidAndPick = 12;
+        public int numPickAndSpawn = 9;
+
         private void Awake()
         {
             instance = this;
@@ -65,9 +69,9 @@ namespace TJ.Scripts
         {
             midPoint = new Vector3(spawnPoint.position.x, pickPoint.position.y, pickPoint.position.z);
 
-            pointsBetweenMidAndPick = GeneratePointsBetween(pickPoint.position, midPoint, 12);
+            pointsBetweenMidAndPick = GeneratePointsBetween(pickPoint.position, midPoint, numMidAndPick);
 
-            pointsBetweenMidAndSpawn = GeneratePointsBetween(midPoint, spawnPoint.position, 9);
+            pointsBetweenMidAndSpawn = GeneratePointsBetween(midPoint, spawnPoint.position, numPickAndSpawn);
 
             allPoints = new();
 
@@ -108,7 +112,7 @@ namespace TJ.Scripts
                 totalPlayerList[i].transform.gameObject.SetActive(false);
             }
 
-            for (int i = 0; i < 24; i++)
+            for (int i = 0; i < TotalPlayer; i++)
             {
                 if (totalPlayerList.Count <= 0 || !totalPlayerList[0]) continue;
                 activePlayerList.Add(totalPlayerList[0]);

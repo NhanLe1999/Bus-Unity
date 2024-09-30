@@ -13,6 +13,9 @@ public class LoadDataGame : MonoBehaviour
     [SerializeField] GameObject prefabBus;
 
     [SerializeField] Transform parent;
+    [SerializeField] VehicleController vehicleController;
+
+    [SerializeField] float scaleAdd = 0.0f;
 
 
     // Start is called before the first frame update
@@ -30,7 +33,11 @@ public class LoadDataGame : MonoBehaviour
             objIn.transform.position = da.position;
 
             objIn.transform.rotation = da.rotation;
+
+            objIn.transform.localScale += Vector3.one * scaleAdd;
         }
+
+        vehicleController.Init();
     }
 
     private GameObject GetObjectIntanceBus(BusType type)

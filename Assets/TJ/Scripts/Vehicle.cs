@@ -81,7 +81,7 @@ namespace TJ.Scripts
         private void OnMouseDown()
         {
             Debug.Log("Mouse" + "moving:" + isMovingStraight + "");
-            if (isMovingStraight /*|| GameManager.instance.gameOver*/ || EventSystem.current.IsPointerOverGameObject())
+            if (isMovingStraight /*|| GameManager.instance.gameOver*/ /*|| EventSystem.current.IsPointerOverGameObject()*/)
                 return;
             if (garage != null && !garage.canMoveNext)
                 return;
@@ -419,6 +419,11 @@ namespace TJ.Scripts
             {
                 parts.SetActive(false);
             }
+
+            foreach (var parts in openvableParts)
+            {
+                parts.SetActive(true);
+            }
         }
 
         public void MoveToSlot()
@@ -429,12 +434,15 @@ namespace TJ.Scripts
                 new(slot.enterPoint.position.x, transform.position.y, slot.enterPoint.position.z),
                 new(slot.stopPoint.position.x, transform.position.y + 0.5f, slot.stopPoint.position.z),
             };
-            ChangeScale(true);
+            ChangeScale(false);
             transform.DOPath(waypoints, .5f, PathType.CatmullRom).OnWaypointChange(waypointindex =>
                 {
                     if (waypointindex == 1)
                     {
-                        transform.DORotateQuaternion(slot.stopPoint.rotation, 0.2f);
+                      //  var newRota = Quaternion.Euler(slot.stopPoint.rotation.x, 0f, 0f);
+                        var newRota = slot.stopPoint.rotation;
+
+                        transform.DORotateQuaternion(newRota, 0.2f);
                     }
                 })
                 .OnComplete(() =>
