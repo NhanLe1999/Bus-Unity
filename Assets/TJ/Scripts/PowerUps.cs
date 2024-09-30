@@ -1,5 +1,6 @@
 using Assets.TJ.Scripts;
 using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -38,12 +39,14 @@ namespace TJ.Scripts
 
             btn_ShuffleVehicles.onClick.AddListener(() =>
             {
+                LoadDataGame.Instance.IsPause = true;
                 ShowCarShufflePanel();
                 SoundController.Instance.PlayOneShot(SoundController.Instance.buttonSound, 0.5f);
                 Vibration.Vibrate(30);
             });
             btn_ShufflePlayers.onClick.AddListener(() =>
             {
+                LoadDataGame.Instance.IsPause = true;
                 ShowPlayerSortPanel();
                 SoundController.Instance.PlayOneShot(SoundController.Instance.buttonSound, 0.5f);
                 Vibration.Vibrate(30);
@@ -73,6 +76,7 @@ namespace TJ.Scripts
                 //call the ads here
 
                 // call below lines after the ad
+                this.StartCoroutine(onEnablePause());
                 ClosePanel();
                 VehicleController.instance.RandomVehicleColors();
                 SoundController.Instance.PlayOneShot(SoundController.Instance.buttonSound, 0.5f);
@@ -89,11 +93,18 @@ namespace TJ.Scripts
                 //call the ads
 
                 //callback for he powerUp
+                this.StartCoroutine(onEnablePause());
                 ClosePanel();
                 ShufflePlayersPowerUp();
                 SoundController.Instance.PlayOneShot(SoundController.Instance.buttonSound, 0.5f);
                 Vibration.Vibrate(30);
             });
+        }
+
+        private IEnumerator onEnablePause()
+        {
+            yield return new WaitForSeconds(0.5f);
+            LoadDataGame.Instance.IsPause = false;
         }
 
         private void SetPowerUpPanel(PowerUp powerUp, string titleText, string infoText, Sprite iconSprite)

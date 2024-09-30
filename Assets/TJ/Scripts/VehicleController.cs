@@ -34,6 +34,7 @@ namespace TJ.Scripts
 
             if(vehicles.Length > 0)
             {
+                totalVehicles = vehicles.Length;
                 RandomVehColor();
                 CalculatePlayersCount();
                 CalculateTotalSeat();
@@ -47,6 +48,7 @@ namespace TJ.Scripts
             RandomVehColor();
             CalculatePlayersCount();
             CalculateTotalSeat();
+            totalVehicles = vehicles.Length;
         }
 
         private void CalculateTotalSeat()

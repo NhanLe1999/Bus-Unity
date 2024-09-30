@@ -81,10 +81,18 @@ namespace TJ.Scripts
         public void OnMouse()
         {
             Debug.Log("Mouse" + "moving:" + isMovingStraight + "");
-            if (isMovingStraight || GameManager.instance.gameOver /*|| EventSystem.current.IsPointerOverGameObject()*/)
+            if (isMovingStraight /*|| GameManager.instance.gameOver || EventSystem.current.IsPointerOverGameObject()*/)
+            {
+                PlayerManager.Instance.textMeshProUGUI.text = "break_1_" + isMovingStraight;
                 return;
+            }
+
+
             if (garage != null && !garage.canMoveNext)
+            {
+                PlayerManager.Instance.textMeshProUGUI.text = "break_2";
                 return;
+            }
 
             if (Helper.instance)
                 Helper.instance.MoveHand();
@@ -100,24 +108,30 @@ namespace TJ.Scripts
                     transform.forward * (hitInfo.distance + 1); // Slightly before the collision point
                 movingZdir = transform.DOMove(targetPosition, 0.2f).SetEase(Ease.InQuad);
 
+
+                PlayerManager.Instance.textMeshProUGUI.text = "break_3";
+
                 return;
             }
 
             slot = ParkingManager.instance.CheckForFreeSlot();
             if (slot == null)
             {
+                PlayerManager.Instance.textMeshProUGUI.text = "break_4";
                 Debug.Log("All Slots are Full");
                 return;
             }
 
             if (garage)
+            {
                 garage.RemoveObstacle(this);
+            }
             MoveCarStraight();
         }
 
         private void OnMouseDown()
         {
-            OnMouse();
+            //OnMouse();
             //transform.GetChild(0).DOShakeScale(0.3f, new Vector3(0, 0, 0.2f), 1, 1);
             //Debug.Log("UpdateSeatCount : " + UpdateSeatCountNo());
         }
