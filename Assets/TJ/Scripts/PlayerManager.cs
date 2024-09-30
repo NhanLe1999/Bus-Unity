@@ -32,6 +32,8 @@ namespace TJ.Scripts
         public int numMidAndPick = 12;
         public int numPickAndSpawn = 9;
 
+        public Camera cam;
+
         private void Awake()
         {
             instance = this;
@@ -510,5 +512,52 @@ namespace TJ.Scripts
         //    UpdatePlayerPos();
         //    //CheckColor(0);
         //}
+
+        void Update()
+        {
+            if(cam == null)
+            {
+                return;
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+               
+
+                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                Vector3 mouseScreenPosition = Input.mousePosition;
+               // mouseScreenPosition.z = -cam.transform.position.z;
+                Vector3 mouseWorldPosition = cam.ScreenToWorldPoint(mouseScreenPosition);
+                RaycastHit[] hits = Physics.RaycastAll(ray);
+
+
+                foreach (var hit in hits)
+                {
+
+                    if (hit.collider != null)
+                    {
+                        Debug.Log(hit.transform.name);
+                        var cpn = hit.transform.GetComponent<Vehicle>();
+                        if(cpn != null)
+                        {
+                            cpn.OnMouse();
+                            return;
+                        }
+
+                        var slot = hit.transform.GetComponent<ParkingSlots>();
+                        if(slot != null)
+                        {
+                            slot.OnMouseClick();
+                            return;
+                        }
+
+                    }
+                }
+
+               
+            }
+        }
+
+
     }
 }

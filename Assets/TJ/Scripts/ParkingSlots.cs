@@ -28,6 +28,11 @@ namespace TJ.Scripts
         }*/
         private void OnMouseDown()
         {
+          
+        }
+
+        public void OnMouseClick()
+        {
             if (GameManager.instance.gameOver || EventSystem.current.IsPointerOverGameObject())
                 return;
             var slots = ParkingManager.instance.slots;

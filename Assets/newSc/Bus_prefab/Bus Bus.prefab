@@ -2686,7 +2686,9 @@ MonoBehaviour:
   - {fileID: 4195554697135329}
   - {fileID: 4668823140299395}
   - {fileID: 4304721135855419}
-  vehMesh: []
+  vehMesh:
+  - {fileID: 23898135307575498}
+  - {fileID: 23695844943299570}
   isFull: 0
   originalPosition: {x: 0, y: 0, z: 0}
   removableParts:
@@ -3425,7 +3427,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4037086951542627
 Transform:
   m_ObjectHideFlags: 0
@@ -3469,7 +3471,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a74ec8eeff21aa145ae443197dc1a61e, type: 2}
+  - {fileID: 2100000, guid: 87f9a4d096c4ed04eb6c156a118fe0a5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

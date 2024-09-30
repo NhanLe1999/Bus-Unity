@@ -25,15 +25,6 @@ namespace TJ.Scripts
             //gameObject.name = gameObject.name.Replace("blue", "");
             gameObject.name += colorEnum.ToString();
             color = colorEnum;
-           
-            //if (mats != null)
-            //{
-
-            //    //for (int i = 0; i < vehMesh.Count; i++)
-            //    //{
-            //    //    vehMesh[i].material = mats;
-            //    //}
-            //}
         }
 
         public IEnumerator MoveToSlot1(Vector3 mid, Transform pickpoint, Vector3 point, float delay)
@@ -78,8 +69,8 @@ namespace TJ.Scripts
                 anim.SetBool(Walk, true);
                 anim.SetBool(Sit, true);
                 transform.localRotation = Quaternion.identity;
-                transform.localPosition += new Vector3(0, -0.34f, 0.2f);
-                transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
+                transform.localPosition += new Vector3(-0.0051f, -0.0103f, 0.0012f);
+                transform.localScale = Vector3.one * 0.05f;
             });
             yield return new WaitForSeconds(0.1f);
             VehicleController.instance.UpdatePlayerCount();
