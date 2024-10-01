@@ -36,10 +36,11 @@ public class LoadDataGame : Singleton<LoadDataGame>
             //  cpn.StartCoroutine(cpn.SetPoint(da.position));
 
             objIn.transform.position = da.position;
-
             objIn.transform.rotation = da.rotation;
-
             objIn.transform.localScale += Vector3.one * scaleAdd;
+
+            objIn.GetComponent<Vehicle>().ChangeColor(da.color);
+
         }
 
         vehicleController.Init();

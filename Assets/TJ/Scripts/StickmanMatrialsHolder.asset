@@ -12,12 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbcd4ec05a587c940915330061bfd7e2, type: 3}
   m_Name: StickmanMatrialsHolder
   m_EditorClassIdentifier: 
-  materialsList:
-  - {fileID: 2100000, guid: a8e5d7a4bd808dd4d910766822b8ae2f, type: 2}
-  - {fileID: 2100000, guid: 0ce3af6c4ab75334bb78efd2e040c17f, type: 2}
-  - {fileID: 2100000, guid: fda340c25b522a546a1e77af12cecfaf, type: 2}
-  - {fileID: 2100000, guid: 2793be51e4cdc71429be3077dc714e89, type: 2}
-  - {fileID: 2100000, guid: 69bcaf3dacf1bdc4bace39a8e833726a, type: 2}
-  - {fileID: 2100000, guid: 6b5f6965264e8744fbd9468431956602, type: 2}
-  - {fileID: 2100000, guid: 3a03e13ff6364c34793284226952de51, type: 2}
-  - {fileID: 2100000, guid: 3cec9ab939ed28541b1ab063caecd06d, type: 2}
+  dataMaterialHoles:
+  - material: {fileID: 2100000, guid: 7ccde76bca8099e4ca7bf66ec3677ab3, type: 2}
+    color: 9
+  - material: {fileID: 2100000, guid: a8e5d7a4bd808dd4d910766822b8ae2f, type: 2}
+    color: 0
+  - material: {fileID: 2100000, guid: 0ce3af6c4ab75334bb78efd2e040c17f, type: 2}
+    color: 6
+  - material: {fileID: 2100000, guid: 2793be51e4cdc71429be3077dc714e89, type: 2}
+    color: 7
+  - material: {fileID: 2100000, guid: fda340c25b522a546a1e77af12cecfaf, type: 2}
+    color: 2
+  - material: {fileID: 2100000, guid: 69bcaf3dacf1bdc4bace39a8e833726a, type: 2}
+    color: 8
+  - material: {fileID: 2100000, guid: 6b5f6965264e8744fbd9468431956602, type: 2}
+    color: 5
+  - material: {fileID: 2100000, guid: 7fcd5d019270bbe4cb811110056a21b8, type: 2}
+    color: 4
+  - material: {fileID: 2100000, guid: 3a03e13ff6364c34793284226952de51, type: 2}
+    color: 1
+  - material: {fileID: 2100000, guid: 3b167a61eeffeac4eb998820b99960ef, type: 2}
+    color: 10
+  - material: {fileID: 2100000, guid: 3cec9ab939ed28541b1ab063caecd06d, type: 2}
+    color: 3

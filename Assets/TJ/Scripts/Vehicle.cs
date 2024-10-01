@@ -9,7 +9,7 @@ namespace TJ.Scripts
 {
     public class Vehicle : MonoBehaviour
     {
-        public ColorEnum vehicleColor;
+        public JunkColor vehicleColor;
         public List<Transform> seats;
         [SerializeField] private List<MeshRenderer> vehMesh;
         public Tween movingZdir;
@@ -26,7 +26,7 @@ namespace TJ.Scripts
         private ParkingSlots slot;
         private bool canCollideWitOtherVehicle = true;
         public static bool isMovingStraight = false;
-        public static ColorEnum LastTouchedCarcolor;
+        public static JunkColor LastTouchedCarcolor;
         public bool isMovingForward = false;
         public Garage garage;
 
@@ -108,7 +108,6 @@ namespace TJ.Scripts
                     transform.forward * (hitInfo.distance + 1); // Slightly before the collision point
                 movingZdir = transform.DOMove(targetPosition, 0.2f).SetEase(Ease.InQuad);
 
-
                 PlayerManager.Instance.textMeshProUGUI.text = "break_3";
 
                 return;
@@ -126,6 +125,9 @@ namespace TJ.Scripts
             {
                 garage.RemoveObstacle(this);
             }
+
+            PlayerManager.Instance.textMeshProUGUI.text = "break_5";
+
             MoveCarStraight();
         }
 
@@ -206,7 +208,7 @@ namespace TJ.Scripts
             SoundController.Instance.PlayOneShot(SoundController.Instance.moving);
         }
 
-        public void ChangeColor(ColorEnum colorEnum)
+        public void ChangeColor(JunkColor colorEnum)
         {
             this.vehicleColor = colorEnum;
             Material mats = VehicleController.instance.VehiclesMaterialHolder.FindMaterialByName(colorEnum);

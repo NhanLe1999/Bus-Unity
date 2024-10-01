@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 
 namespace TJ.Scripts
 {
-    public class PlayerManager : Singleton<PlayerManager>
+    public class PlayerManager : SingletonMono<PlayerManager>
     {
         public static PlayerManager instance;
         public List<Player> playersInScene = new();
@@ -552,7 +552,7 @@ namespace TJ.Scripts
                         var cpn = hit.transform.GetComponent<Vehicle>();
                         if(cpn != null)
                         {
-                            textMeshProUGUI.text = hit.transform.name;
+                            textMeshProUGUI.text = hit.transform.name + "1";
 
                             cpn.OnMouse();
                             return;

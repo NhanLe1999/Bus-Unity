@@ -118,6 +118,8 @@ public static class Vibration
     public static void Vibrate ( long milliseconds )
     {
 
+        return;
+
         if ( Application.isMobilePlatform ) {
 #if !UNITY_WEBGL
 #if UNITY_ANDROID

@@ -8,7 +8,7 @@ namespace TJ.Scripts
     {
         private static readonly int Sit = Animator.StringToHash("Sit");
         public static readonly int Walk = Animator.StringToHash("Walk");
-        public ColorEnum color;
+        public JunkColor color;
         public Renderer meshRenderer;
         public Animator anim;
         public GameObject animGo;
@@ -18,7 +18,7 @@ namespace TJ.Scripts
             anim = animGo.GetComponent<Animator>();
         }
 
-        public void ChangeColor(ColorEnum colorEnum)
+        public void ChangeColor(JunkColor colorEnum)
         {
             Material mats = VehicleController.instance.stickmanMaterialHolder.FindMaterialByName(colorEnum);
             meshRenderer.material = mats;

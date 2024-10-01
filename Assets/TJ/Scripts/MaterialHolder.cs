@@ -1,71 +1,65 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
+public class DataMaterialHole
+{
+    public Material material;
+    public JunkColor color;
+}
+
 [CreateAssetMenu(menuName ="MaterialHolder",fileName ="materialsHolder")]
+
 public class MaterialHolder : ScriptableObject
 {
-    public List<Material> materialsList;
 
-    private Dictionary<ColorEnum, Material> materialDictionary;
+    public List<DataMaterialHole> dataMaterialHoles = null;
 
-    public void InitializeMaterialDictionary()
-    {
-        materialDictionary = new Dictionary<ColorEnum, Material>();
 
-        foreach (Material m in materialsList)
-        {
-            foreach (ColorEnum color in System.Enum.GetValues(typeof(ColorEnum)))
-            {
-                if (m.name.Contains(color.ToString()))
-                {
-                    materialDictionary[color] = m;
-                    break;
-                }
-            }
-        }
-    }
 
-    public Material FindMaterialByName(ColorEnum type)
+    public Material FindMaterialByName(JunkColor type)
     {
         //if (materialDictionary == null)
         //{
         //    InitializeMaterialDictionary();
         //}
 
-        if (materialDictionary.ContainsKey(type))
+        foreach(var it in dataMaterialHoles)
         {
-            return materialDictionary[type];
+            if(it.color.Equals(type))
+            {
+                return it.material;
+            }
         }
-        else
-        {
-            Debug.Log("Material Not Found With the color " + type);
-            return null;
-        }
+
+        return null;
+        
     }
 
-    public List<Material> GetRandomMaterials(int count)
+    public List<DataMaterialHole> GetRandomMaterials(int count)
     {
-        if (materialsList == null || materialsList.Count == 0)
+        if (dataMaterialHoles == null || dataMaterialHoles.Count == 0)
         {
             Debug.Log("Material list is empty!");
             return null;
         }
 
         // Shuffle the materialsList
-        List<Material> shuffledMaterials = new List<Material>(materialsList);
+        List<DataMaterialHole> shuffledMaterials = new List<DataMaterialHole>(dataMaterialHoles);
         System.Random rng = new System.Random();
         int n = shuffledMaterials.Count;
         while (n > 1)
         {
             n--;
             int k = rng.Next(n + 1);
-            Material value = shuffledMaterials[k];
+            DataMaterialHole value = shuffledMaterials[k];
             shuffledMaterials[k] = shuffledMaterials[n];
             shuffledMaterials[n] = value;
         }
 
         // Take the first 'count' materials from the shuffled list
-        List<Material> randomMaterials = new List<Material>();
+        List<DataMaterialHole> randomMaterials = new List<DataMaterialHole>();
         for (int i = 0; i < Mathf.Min(count, shuffledMaterials.Count); i++)
         {
             randomMaterials.Add(shuffledMaterials[i]);

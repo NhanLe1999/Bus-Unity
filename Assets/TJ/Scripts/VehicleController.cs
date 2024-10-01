@@ -26,8 +26,6 @@ namespace TJ.Scripts
         private void Awake()
         {
             instance = this;
-            VehiclesMaterialHolder.InitializeMaterialDictionary();
-            stickmanMaterialHolder.InitializeMaterialDictionary();
 
             if (shuffle == true)
                 vehicles = GetComponentsInChildren<Vehicle>(true);
@@ -35,7 +33,6 @@ namespace TJ.Scripts
             if(vehicles.Length > 0)
             {
                 totalVehicles = vehicles.Length;
-                RandomVehColor();
                 CalculatePlayersCount();
                 CalculateTotalSeat();
             }
@@ -45,7 +42,6 @@ namespace TJ.Scripts
         {
             if (shuffle == true)
                 vehicles = GetComponentsInChildren<Vehicle>(true);
-            RandomVehColor();
             CalculatePlayersCount();
             CalculateTotalSeat();
             totalVehicles = vehicles.Length;
@@ -73,8 +69,8 @@ namespace TJ.Scripts
         public void RandomVehColor()
         {
             System.Random r = new System.Random();
-            ColorEnum[] values = (ColorEnum[])Enum.GetValues(typeof(ColorEnum));
-            List<ColorEnum> colors = new(values);
+            JunkColor[] values = (JunkColor[])Enum.GetValues(typeof(JunkColor));
+            List<JunkColor> colors = new(values);
             colors = colors.OrderBy(x => r.Next()).ToList();
             int colorIndex = 0;
             for (int i = 0; i < vehicles.Length; i++)
@@ -84,7 +80,7 @@ namespace TJ.Scripts
                     colorIndex = 0;
                 }
 
-                ColorEnum color = colors[0];
+                JunkColor color = colors[0];
                 vehicles[i].ChangeColor(colors[colorIndex]);
                 colorIndex++;
             }
@@ -96,7 +92,7 @@ namespace TJ.Scripts
 
             foreach (var group in groupedVehicles)
             {
-                List<ColorEnum> existingColors = new List<ColorEnum>();
+                List<JunkColor> existingColors = new List<JunkColor>();
                 foreach (var vehicle in group)
                 {
                     existingColors.Add(vehicle.vehicleColor);
@@ -135,7 +131,7 @@ namespace TJ.Scripts
 
                 vehicleGroup = vehicleGroup.OrderBy(x => r.Next()).ToList();
 
-                ColorEnum firstVehicleColor = vehicleGroup[0].vehicleColor;
+                JunkColor firstVehicleColor = vehicleGroup[0].vehicleColor;
 
                 for (int i = 0; i < vehicleGroup.Count - 1; i++)
                 {
