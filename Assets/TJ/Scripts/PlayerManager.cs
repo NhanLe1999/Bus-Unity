@@ -133,7 +133,7 @@ namespace TJ.Scripts
                 Player currentPlayer = activePlayerList[i];
                 currentPlayer.transform.gameObject.SetActive(true);
                 currentPlayer.anim.SetBool(Player.Walk, true);
-                if (i < 14)
+                if (i < numMidAndPick + 2)
                 {
                     StartCoroutine(currentPlayer.MoveToSlot1(midPoint, pickPoint, points[i], i * .15f));
                 }

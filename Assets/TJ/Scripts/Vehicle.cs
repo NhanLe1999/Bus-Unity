@@ -32,6 +32,19 @@ namespace TJ.Scripts
 
         public int SeatCount => seats.Count;
 
+/*        float duration01 = 0.1f; //0.1f
+        float duration03 = 0.3f; //0.3f
+        float duration05 = 0.5f; //0.5f
+        float duration02 = 0.2f; //0.2f
+        float duration08 = 0.8f; //0.8f*/
+
+
+        float duration01 = 1.0f; //0.1f
+        float duration03 =2.0f; //0.3f
+        float duration05 = 2.0f; //0.5f
+        float duration02 = 2.0f; //0.2f
+        float duration08 = 2.0f; //0.8f
+
 
         private void Awake()
         {
@@ -106,7 +119,7 @@ namespace TJ.Scripts
                 Vector3 targetPosition =
                     transform.position +
                     transform.forward * (hitInfo.distance + 1); // Slightly before the collision point
-                movingZdir = transform.DOMove(targetPosition, 0.2f).SetEase(Ease.InQuad);
+                movingZdir = transform.DOMove(targetPosition, duration02).SetEase(Ease.InQuad);
 
                 PlayerManager.Instance.textMeshProUGUI.text = "break_3";
 
@@ -190,7 +203,7 @@ namespace TJ.Scripts
             VehicleController.instance.vehicles = VehicleController.instance.vehicles
                 .Where(v => v != this.transform)
                 .ToArray();
-            transform.DORotateQuaternion(ParkingManager.instance.exitPoint.rotation, 0.2f);
+            transform.DORotateQuaternion(ParkingManager.instance.exitPoint.rotation, duration02);
             transform.DOMove(
                 new Vector3(slot.enterPoint.transform.position.x, transform.position.y,
                     slot.enterPoint.transform.position.z), 30f).SetSpeedBased().OnComplete(() =>
@@ -216,7 +229,14 @@ namespace TJ.Scripts
             {
                 for (int i = 0; i < vehMesh.Count; i++)
                 {
-                    vehMesh[i].material = mats;
+                    var meshs = new Material[vehMesh[i].materials.Length];
+
+                    for(int j = 0; j < vehMesh[i].materials.Length; j++)
+                    {
+                        meshs[j] = mats;
+                    }
+
+                    vehMesh[i].materials = meshs;
                 }
             }
         }
@@ -308,7 +328,7 @@ namespace TJ.Scripts
 
         public void ShakeVehicle()
         {
-            transform.DOShakeRotation(0.2f, transform.forward * 2, vibrato: 10, randomness: 90).SetEase(Ease.InBounce);
+            transform.DOShakeRotation(duration02, transform.forward * 2, vibrato: 10, randomness: 90).SetEase(Ease.InBounce);
         }
 
         private static int counter = 0;
@@ -327,7 +347,12 @@ namespace TJ.Scripts
                     MoveToSideBorder(VehicleController.instance.rightCollider, 20f);
                     return;
                 }*/
-                MoveToSideBorder(VehicleController.instance.leftCollider, -20f);
+
+                transform.DORotateQuaternion(Quaternion.Euler(0.015f, 90, 0f), duration01).OnComplete(() => {
+                    MoveToSideBorder(VehicleController.instance.rightCollider, -20f);
+                });
+
+
 
                 if (!toggle)
                 {
@@ -400,10 +425,13 @@ namespace TJ.Scripts
 
             Quaternion targetRotation = Quaternion.LookRotation(directionToCube, Vector3.up);
 
-            transform.DORotateQuaternion(targetRotation, 0.1f);
-            transform.DOLocalMoveX(distance, 0.8f);
+            transform.DORotateQuaternion(targetRotation, duration01);
+            transform.DOLocalMoveX(distance, duration08);
             VehicleController.instance.RemoveVehicle(this);
         }
+
+
+
 
         public void MoveToTargetFromBorder()
         {
@@ -416,28 +444,35 @@ namespace TJ.Scripts
                 new Vector3(transform.position.x, transform.position.y, road.position.z)
             };
 
-            transform.DORotate(Vector3.zero, 0.1f);
-            transform.DOPath(path, 0.3f, PathType.Linear).SetEase(Ease.Linear).OnComplete(() =>
-            {
-                transform.DOLookAt(roadPos, 0.1f);
-                //ParkingManager.instance.GetSlot(this);
-                MoveToSlot();
-                foreach (var parts in removableParts)
+            transform.DORotate(Vector3.zero, duration01).OnComplete(() => {
+                transform.DOPath(path, duration03, PathType.Linear).SetEase(Ease.Linear).OnComplete(() =>
                 {
-                    parts.SetActive(false);
-                }
+                    transform.DOLookAt(roadPos, duration01);
+                    //ParkingManager.instance.GetSlot(this);
+                    MoveToSlot();
+                    foreach (var parts in removableParts)
+                    {
+                        parts.SetActive(false);
+                    }
 
-                foreach (var parts in openvableParts)
-                {
-                    parts.SetActive(true);
-                }
+                    foreach (var parts in openvableParts)
+                    {
+                        parts.SetActive(true);
+                    }
+                });
             });
+            
         }
 
         public void MoveToTargetFromUpBorder()
         {
-            transform.DOLookAt(slot.transform.position, 0.1f);
+            transform.DOLookAt(slot.transform.position, duration01).OnComplete(() =>
+            {
+               // MoveToSlot();
+            });
+
             MoveToSlot();
+
             foreach (var parts in removableParts)
             {
                 parts.SetActive(false);
@@ -458,16 +493,17 @@ namespace TJ.Scripts
                 new(slot.stopPoint.position.x, transform.position.y + 0.01f, slot.stopPoint.position.z),
             };
             ChangeScale(false);
-            transform.DOPath(waypoints, .5f, PathType.CatmullRom).OnWaypointChange(waypointindex =>
-                {
-                    if (waypointindex == 1)
-                    {
-                      //  var newRota = Quaternion.Euler(slot.stopPoint.rotation.x, 0f, 0f);
-                        var newRota = slot.stopPoint.rotation;
 
-                        transform.DORotateQuaternion(newRota, 0.2f);
-                    }
-                })
+            transform.DOPath(waypoints, duration05, PathType.CatmullRom).OnWaypointChange(waypointindex =>
+            {
+                if (waypointindex == 1)
+                {
+                    //  var newRota = Quaternion.Euler(slot.stopPoint.rotation.x, 0f, 0f);
+                    var newRota = slot.stopPoint.rotation;
+
+                    transform.DORotateQuaternion(newRota, duration02);
+                }
+            })
                 .OnComplete(() =>
                 {
                     isMovingStraight = false;
@@ -482,6 +518,9 @@ namespace TJ.Scripts
                         EventManager.OnNewVehArrived?.Invoke();
                     GetComponent<AudioSource>().enabled = false;
                 });
+
+
+           // transform.rotation = Quaternion.Euler(0, roata, 0);
         }
     }
 }

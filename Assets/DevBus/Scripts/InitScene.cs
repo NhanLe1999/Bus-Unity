@@ -6,6 +6,7 @@ public class InitScene : MonoBehaviour
 {
     void Start()
     {
+        Vibration.Init();
         HelperManager.OnLoadScene(ScStatic.GAME_SCENE);
     }
 

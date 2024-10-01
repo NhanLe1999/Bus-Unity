@@ -66,11 +66,15 @@ namespace TJ.Scripts
             };
             transform.DOPath(path, 0.8f, PathType.CatmullRom).OnComplete(() =>
             {
+
+                Vibration.Vibrate(50);
+
                 anim.SetBool(Walk, true);
                 anim.SetBool(Sit, true);
                 transform.localRotation = Quaternion.identity;
-                transform.localPosition += new Vector3(-0.0051f, -0.0103f, 0.0012f);
-                transform.localScale = Vector3.one * 0.05f;
+                transform.localPosition += new Vector3(0, -0.119f, 0.113f);
+               // transform.localScale = Vector3.one * 0.35f;
+                transform.localScale = Vector3.one * 0.1f;
             });
             yield return new WaitForSeconds(0.1f);
             VehicleController.instance.UpdatePlayerCount();
