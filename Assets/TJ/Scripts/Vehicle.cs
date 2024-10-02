@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,22 +33,36 @@ namespace TJ.Scripts
 
         public int SeatCount => seats.Count;
 
-/*        float duration01 = 0.1f; //0.1f
-        float duration03 = 0.3f; //0.3f
-        float duration05 = 0.5f; //0.5f
-        float duration02 = 0.2f; //0.2f
-        float duration08 = 0.8f; //0.8f*/
+        float duration01 = 0.1f * 2.0f; //0.1f
+        float duration03 = 0.3f * 2.0f; //0.3f
+        float duration05 = 0.5f * 2.0f; //0.5f
+        float duration02 = 0.2f * 2.0f; //0.2f
+        float duration08 = 0.8f * 2.0f; //0.8f
+        float dorotate = 0.1f;
+
+        float speedMove = 9.0f;
 
 
-        float duration01 = 1.0f; //0.1f
-        float duration03 =2.0f; //0.3f
-        float duration05 = 2.0f; //0.5f
-        float duration02 = 2.0f; //0.2f
-        float duration08 = 2.0f; //0.8f
+        /*       float duration01 = 1.0f; //0.1f
+               float duration03 =2.0f; //0.3f
+               float duration05 = 2.0f; //0.5f
+               float duration02 = 2.0f; //0.2f
+               float duration08 = 2.0f; //0.8f*/
+
+        private Tween tweenMoveToSideBorder = null;
+
+        private static int counter = 0;
+        private bool toggle;
+        private bool isColliderUpBorder = false;
+        private bool isBorder = false;
+        private bool isMoveToSlot = true;
 
 
         private void Awake()
         {
+            isBorder = true;
+            toggle = true;
+            isColliderUpBorder = true;
             //UpdatePlayerSeat = SeatCount;
         }
         //public int UpdateSeatCountNo()
@@ -119,7 +134,7 @@ namespace TJ.Scripts
                 Vector3 targetPosition =
                     transform.position +
                     transform.forward * (hitInfo.distance + 1); // Slightly before the collision point
-                movingZdir = transform.DOMove(targetPosition, duration02).SetEase(Ease.InQuad);
+                movingZdir = transform.DOMove(targetPosition, speedMove).SetSpeedBased().SetEase(Ease.InQuad);
 
                 PlayerManager.Instance.textMeshProUGUI.text = "break_3";
 
@@ -203,20 +218,22 @@ namespace TJ.Scripts
             VehicleController.instance.vehicles = VehicleController.instance.vehicles
                 .Where(v => v != this.transform)
                 .ToArray();
-            transform.DORotateQuaternion(ParkingManager.instance.exitPoint.rotation, duration02);
-            transform.DOMove(
-                new Vector3(slot.enterPoint.transform.position.x, transform.position.y,
-                    slot.enterPoint.transform.position.z), 30f).SetSpeedBased().OnComplete(() =>
-            {
-                slot.isOccupied = false;
-                canCollideWitOtherVehicle = false;
-                ParkingManager.instance.parkedVehicles.Remove(this);
-                transform.parent = null;
-                transform.DOMove(ParkingManager.instance.exitPoint.transform.position, 35f).SetSpeedBased().SetEase(Ease.InBack)
-                    .OnComplete(() => { 
-                        transform.gameObject.SetActive(false); 
-                    });
+            transform.DORotateQuaternion(ParkingManager.instance.exitPoint.rotation, dorotate).OnComplete(() => {
+                transform.DOMove(
+               new Vector3(slot.enterPoint.transform.position.x, transform.position.y,
+                   slot.enterPoint.transform.position.z), speedMove - 4).SetSpeedBased().OnComplete(() =>
+                   {
+                       slot.isOccupied = false;
+                       canCollideWitOtherVehicle = false;
+                       ParkingManager.instance.parkedVehicles.Remove(this);
+                       transform.parent = null;
+                       transform.DOMove(ParkingManager.instance.exitPoint.transform.position, speedMove).SetSpeedBased().SetEase(Ease.InBack)
+                            .OnComplete(() => {
+                       transform.gameObject.SetActive(false);
+                   });
+                   });
             });
+           
             SoundController.Instance.PlayFullSound();
             SoundController.Instance.PlayOneShot(SoundController.Instance.moving);
         }
@@ -257,7 +274,7 @@ namespace TJ.Scripts
             Vector3 worldPoint = transform.parent.TransformPoint(pointAtDistance);
 
             Debug.DrawLine(transform.position, worldPoint, Color.green);
-            movingZdir = transform.DOMove(worldPoint, 12f).SetSpeedBased();
+            movingZdir = transform.DOMove(worldPoint, speedMove).SetSpeedBased();
            // GetComponent<AudioSource>().enabled = true;
         }
         public bool CheckForObstacles()
@@ -331,9 +348,6 @@ namespace TJ.Scripts
             transform.DOShakeRotation(duration02, transform.forward * 2, vibrato: 10, randomness: 90).SetEase(Ease.InBounce);
         }
 
-        private static int counter = 0;
-        private bool toggle;
-
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.CompareTag("Down"))
@@ -341,21 +355,15 @@ namespace TJ.Scripts
                 canCollideWitOtherVehicle = false;
                 movingZdir.Pause();
                 Debug.Log("HitDown");
-                toggle = !toggle;
-                /*if (toggle)
+                if (toggle)
                 {
-                    MoveToSideBorder(VehicleController.instance.rightCollider, 20f);
-                    return;
-                }*/
+                    toggle = false;
+                   /* MoveToSideBorder(VehicleController.instance.rightCollider, 20f);
+                    return;*/
 
-                transform.DORotateQuaternion(Quaternion.Euler(0.015f, 90, 0f), duration01).OnComplete(() => {
-                    MoveToSideBorder(VehicleController.instance.rightCollider, -20f);
-                });
-
-
-
-                if (!toggle)
-                {
+                    transform.DORotateQuaternion(Quaternion.Euler(0f, 90, 0f), dorotate).OnComplete(() => {
+                        MoveToSideBorder(VehicleController.instance.rightCollider, 20f);
+                    });
                 }
 
                 return;
@@ -381,7 +389,7 @@ namespace TJ.Scripts
                     }
 
                     vehicle.ShakeVehicle();
-                    transform.DOMove(originalPosition, 0.3f).SetEase(Ease.OutBack)
+                    transform.DOMove(originalPosition, speedMove).SetSpeedBased().SetEase(Ease.OutBack)
                         .OnComplete(() =>
                         {
                             counter = 0;
@@ -391,8 +399,9 @@ namespace TJ.Scripts
                 }
             }
 
-            if (other.gameObject.CompareTag("Border") && !isCollided)
+            if (other.gameObject.CompareTag("Border") && !isCollided && isBorder)
             {
+                isBorder = false;
                 isCollided = true;
                 isMovingStraight = false;
                 canCollideWitOtherVehicle = false;
@@ -402,8 +411,9 @@ namespace TJ.Scripts
                 movingZdir.Pause();
             }
 
-            if (other.gameObject.CompareTag("Upborder") && !isCollided)
+            if (other.gameObject.CompareTag("Upborder") && !isCollided && isColliderUpBorder)
             {
+                isColliderUpBorder = false;
                 isCollided = true;
                 isMovingStraight = false;
                 canCollideWitOtherVehicle = false;
@@ -425,8 +435,10 @@ namespace TJ.Scripts
 
             Quaternion targetRotation = Quaternion.LookRotation(directionToCube, Vector3.up);
 
-            transform.DORotateQuaternion(targetRotation, duration01);
-            transform.DOLocalMoveX(distance, duration08);
+            transform.DORotateQuaternion(targetRotation, dorotate).OnComplete(() => {
+                tweenMoveToSideBorder = transform.DOLocalMoveX(distance, speedMove).SetSpeedBased();
+            });
+
             VehicleController.instance.RemoveVehicle(this);
         }
 
@@ -444,20 +456,52 @@ namespace TJ.Scripts
                 new Vector3(transform.position.x, transform.position.y, road.position.z)
             };
 
-            transform.DORotate(Vector3.zero, duration01).OnComplete(() => {
-                transform.DOPath(path, duration03, PathType.Linear).SetEase(Ease.Linear).OnComplete(() =>
+            tweenMoveToSideBorder?.Kill();
+
+            transform.DORotate(Vector3.zero, dorotate).OnComplete(() => {
+                transform.DOPath(path, speedMove, PathType.Linear).SetSpeedBased().SetEase(Ease.Linear).OnComplete(() =>
                 {
                     transform.DOLookAt(roadPos, duration01);
-                    //ParkingManager.instance.GetSlot(this);
-                    MoveToSlot();
-                    foreach (var parts in removableParts)
-                    {
-                        parts.SetActive(false);
-                    }
 
-                    foreach (var parts in openvableParts)
+                    var dis = transform.position.x - slot.transform.position.x;
+                   
+                    if (Mathf.Abs(dis) > 0.5f)
                     {
-                        parts.SetActive(true);
+                        float ry = -90;
+                        if (dis < 0)
+                        {
+                            ry = 90;
+                        }
+                       
+                        var rotat = Quaternion.Euler(0, ry, 0);
+                        transform.DORotateQuaternion(rotat, dorotate).OnComplete(() =>
+                        {
+                            MoveToSlot(() => {
+                                foreach (var parts in removableParts)
+                                {
+                                    parts.SetActive(false);
+                                }
+
+                                foreach (var parts in openvableParts)
+                                {
+                                    parts.SetActive(true);
+                                }
+                            });
+                        });
+                    }
+                    else
+                    {
+                        MoveToSlot(() => {
+                            foreach (var parts in removableParts)
+                            {
+                                parts.SetActive(false);
+                            }
+
+                            foreach (var parts in openvableParts)
+                            {
+                                parts.SetActive(true);
+                            }
+                        });
                     }
                 });
             });
@@ -466,61 +510,55 @@ namespace TJ.Scripts
 
         public void MoveToTargetFromUpBorder()
         {
-            transform.DOLookAt(slot.transform.position, duration01).OnComplete(() =>
-            {
-               // MoveToSlot();
-            });
-
-            MoveToSlot();
-
-            foreach (var parts in removableParts)
-            {
-                parts.SetActive(false);
-            }
-
-            foreach (var parts in openvableParts)
-            {
-                parts.SetActive(true);
-            }
+            MoveToTargetFromBorder();
         }
 
-        public void MoveToSlot()
+        public void MoveToSlot(Action callback)
         {
-            // slot.isOccupied = true;
-            Vector3[] waypoints = new Vector3[]
+            if (!isMoveToSlot)
+            {
+                return;
+            }
+            isMoveToSlot = false;
+
+            Vector3[] waypoints1 = new Vector3[]
             {
                 new(slot.enterPoint.position.x, transform.position.y, slot.enterPoint.position.z),
-                new(slot.stopPoint.position.x, transform.position.y + 0.01f, slot.stopPoint.position.z),
             };
+
+            Vector3[] waypoints2 = new Vector3[]
+           {
+                new(slot.stopPoint.position.x, transform.position.y + 0.01f, slot.stopPoint.position.z),
+           };
+
             ChangeScale(false);
 
-            transform.DOPath(waypoints, duration05, PathType.CatmullRom).OnWaypointChange(waypointindex =>
+            transform.DOPath(waypoints1, speedMove, PathType.CatmullRom).SetSpeedBased().OnComplete(() =>
             {
-                if (waypointindex == 1)
-                {
-                    //  var newRota = Quaternion.Euler(slot.stopPoint.rotation.x, 0f, 0f);
-                    var newRota = slot.stopPoint.rotation;
+                var newRota = slot.stopPoint.rotation;
 
-                    transform.DORotateQuaternion(newRota, duration02);
-                }
-            })
-                .OnComplete(() =>
+                transform.DORotateQuaternion(newRota, dorotate).OnComplete(() =>
                 {
-                    isMovingStraight = false;
-                    ParkingManager.instance.parkedVehicles.Add(this);
-                    //slot.isOccupied = true;
-                    transform.parent = slot.transform;
-                    GetComponent<BoxCollider>().enabled = false;
-                    //PlayerManager.instance.CheckPlayersOfsameColor(veh);
-                    // PlayerManager.instance.CheckColor(0);
-                    Debug.Log("Moved to slot");
-                    if (!PlayerManager.instance.isColormatched)
-                        EventManager.OnNewVehArrived?.Invoke();
-                    GetComponent<AudioSource>().enabled = false;
+                    transform.DOPath(waypoints2, speedMove, PathType.CatmullRom).SetSpeedBased().OnComplete(() =>
+                    {
+                        var newRota = slot.stopPoint.rotation;
+
+                        transform.DORotateQuaternion(newRota, dorotate).OnComplete(() =>
+                        {
+                            callback?.Invoke();
+                            isMovingStraight = false;
+                            ParkingManager.instance.parkedVehicles.Add(this);
+                            transform.parent = slot.transform;
+                            GetComponent<BoxCollider>().enabled = false;
+                            Debug.Log("Moved to slot");
+                            if (!PlayerManager.instance.isColormatched)
+                                EventManager.OnNewVehArrived?.Invoke();
+                            GetComponent<AudioSource>().enabled = false;
+                        });
+                    });
                 });
-
-
-           // transform.rotation = Quaternion.Euler(0, roata, 0);
+            });
         }
+  
     }
 }
