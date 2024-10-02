@@ -1,20 +1,18 @@
+using _Game.Scripts.Bus;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace _Game.Scripts.Bus
+[Serializable]
+public struct TunnelDataPack
 {
-	[Serializable]
-	public struct TunnelDataPack
-	{
-		public List<TunnelBusData> datas;
+    public List<TunnelBusData> datas;
 
-		public Vector3 position;
+    public Vector3 position;
 
-		public Quaternion rotation;
+    public Quaternion rotation;
 
-		public int lockBusIndex;
+    public int lockBusIndex;
 
-		public List<int> blockBusIndexList;
-	}
+    public List<int> blockBusIndexList;
 }

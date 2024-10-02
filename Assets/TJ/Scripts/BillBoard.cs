@@ -10,6 +10,6 @@ public class BillBoard : MonoBehaviour
     private void Start()
     {
         cam = Camera.main;
-        transform.rotation = cam.transform.rotation;
+        //transform.rotation = cam.transform.rotation;
     }
 }

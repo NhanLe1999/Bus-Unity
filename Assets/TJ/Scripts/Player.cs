@@ -73,8 +73,7 @@ namespace TJ.Scripts
                 anim.SetBool(Sit, true);
                 transform.localRotation = Quaternion.identity;
                 transform.localPosition += new Vector3(0, -0.119f, 0.113f);
-               // transform.localScale = Vector3.one * 0.35f;
-                transform.localScale = Vector3.one * 0.1f;
+                transform.localScale = Vector3.one * 0.35f;
             });
             yield return new WaitForSeconds(0.1f);
             VehicleController.instance.UpdatePlayerCount();

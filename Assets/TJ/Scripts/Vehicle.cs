@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using _Game.Scripts.Bus;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -30,6 +31,7 @@ namespace TJ.Scripts
         public static JunkColor LastTouchedCarcolor;
         public bool isMovingForward = false;
         public Garage garage;
+        private bool isNext = false;
 
         public int SeatCount => seats.Count;
 
@@ -41,6 +43,10 @@ namespace TJ.Scripts
         float dorotate = 0.1f;
 
         float speedMove = 9.0f;
+
+        public BusPosData busPosData;
+
+        Collider ColliderBus = null;
 
 
         /*       float duration01 = 1.0f; //0.1f
@@ -60,23 +66,12 @@ namespace TJ.Scripts
 
         private void Awake()
         {
+            ColliderBus = GetComponent<Collider>();
             isBorder = true;
             toggle = true;
+            isNext = true;
             isColliderUpBorder = true;
-            //UpdatePlayerSeat = SeatCount;
         }
-        //public int UpdateSeatCountNo()
-        //{
-        //    for (int i = 0; i < seats.Count; i++)
-        //    {
-        //        if (seats[i].childCount == 0)
-        //        {
-        //            updatePlayerSeat++;
-        //        }
-        //    }
-        //    return updatePlayerSeat;
-
-        //}
 
         void Start()
         {
@@ -84,9 +79,6 @@ namespace TJ.Scripts
             ogScale = transform.localScale;
             isMovingStraight = false;
             Vector3 currentRotation = transform.rotation.eulerAngles;
-          //  transform.rotation = Quaternion.Euler(0, currentRotation.y, 0);
-            //UpdateSeatCountNo();
-            //UpdatePlayerSeat = SeatCount;
         }
 
         public IEnumerator SetPoint(Vector3 point)
@@ -98,7 +90,6 @@ namespace TJ.Scripts
         private void OnValidate()
         {
             Vector3 currentRotation = transform.rotation.eulerAngles;
-            //transform.rotation = Quaternion.Euler(0, currentRotation.y, 0);
         }
 
         public void SetInitialPosition()
@@ -111,14 +102,14 @@ namespace TJ.Scripts
             Debug.Log("Mouse" + "moving:" + isMovingStraight + "");
             if (isMovingStraight /*|| GameManager.instance.gameOver || EventSystem.current.IsPointerOverGameObject()*/)
             {
-                PlayerManager.Instance.textMeshProUGUI.text = "break_1_" + isMovingStraight;
+              //  PlayerManager.Instance.textMeshProUGUI.text = "break_1_" + isMovingStraight;
                 return;
             }
 
 
             if (garage != null && !garage.canMoveNext)
             {
-                PlayerManager.Instance.textMeshProUGUI.text = "break_2";
+             //   PlayerManager.Instance.textMeshProUGUI.text = "break_2";
                 return;
             }
 
@@ -130,13 +121,11 @@ namespace TJ.Scripts
                 isMovingStraight = true;
                 isMovingForward = true;
                 Vibration.Vibrate(40);
-                // Move the car straight forward towards the detected vehicle
                 Vector3 targetPosition =
                     transform.position +
                     transform.forward * (hitInfo.distance + 1); // Slightly before the collision point
                 movingZdir = transform.DOMove(targetPosition, speedMove).SetSpeedBased().SetEase(Ease.InQuad);
 
-                PlayerManager.Instance.textMeshProUGUI.text = "break_3";
 
                 return;
             }
@@ -144,19 +133,23 @@ namespace TJ.Scripts
             slot = ParkingManager.instance.CheckForFreeSlot();
             if (slot == null)
             {
-                PlayerManager.Instance.textMeshProUGUI.text = "break_4";
                 Debug.Log("All Slots are Full");
                 return;
             }
 
-            if (garage)
-            {
-                garage.RemoveObstacle(this);
-            }
-
-            PlayerManager.Instance.textMeshProUGUI.text = "break_5";
-
             MoveCarStraight();
+        }
+
+        void OnGaraNextBus()
+        {
+            if (isNext)
+            {
+                isNext = false;
+                if (garage)
+                {
+                    garage.RemoveObstacle(this);
+                }
+            }
         }
 
         private void OnMouseDown()
@@ -166,11 +159,6 @@ namespace TJ.Scripts
             //Debug.Log("UpdateSeatCount : " + UpdateSeatCountNo());
         }
 
-        //public int GetSeatcount()
-        //{
-        //    seatCount = seats.Count;
-        //    return seatCount;
-        //}
         public void ChangeScale(bool shift)
         {
             newScale = Vector3.one;
@@ -218,22 +206,24 @@ namespace TJ.Scripts
             VehicleController.instance.vehicles = VehicleController.instance.vehicles
                 .Where(v => v != this.transform)
                 .ToArray();
-            transform.DORotateQuaternion(ParkingManager.instance.exitPoint.rotation, dorotate).OnComplete(() => {
-                transform.DOMove(
-               new Vector3(slot.enterPoint.transform.position.x, transform.position.y,
-                   slot.enterPoint.transform.position.z), speedMove - 4).SetSpeedBased().OnComplete(() =>
-                   {
-                       slot.isOccupied = false;
-                       canCollideWitOtherVehicle = false;
-                       ParkingManager.instance.parkedVehicles.Remove(this);
-                       transform.parent = null;
-                       transform.DOMove(ParkingManager.instance.exitPoint.transform.position, speedMove).SetSpeedBased().SetEase(Ease.InBack)
-                            .OnComplete(() => {
-                       transform.gameObject.SetActive(false);
-                   });
-                   });
-            });
-           
+
+
+
+            transform.DOMove(new Vector3(slot.enterPoint.transform.position.x, transform.position.y, slot.enterPoint.transform.position.z), speedMove - 4).
+                SetSpeedBased().OnComplete(() => {
+                     transform.DORotateQuaternion(ParkingManager.instance.exitPoint.rotation, dorotate).OnComplete(() => {
+                         canCollideWitOtherVehicle = false;
+                         ParkingManager.instance.parkedVehicles.Remove(this);
+                         transform.parent = null;
+                         transform.DOMove(ParkingManager.instance.exitPoint.transform.position, speedMove).SetSpeedBased().SetEase(Ease.InBack)
+                              .OnComplete(() => {
+                                  transform.gameObject.SetActive(false);
+                                  slot.isOccupied = false;
+                              });
+                     });
+                 });
+
+
             SoundController.Instance.PlayFullSound();
             SoundController.Instance.PlayOneShot(SoundController.Instance.moving);
         }
@@ -343,15 +333,18 @@ namespace TJ.Scripts
             });
         }
 
-        public void ShakeVehicle()
+        public void ShakeVehicle(Action callback = null)
         {
-            transform.DOShakeRotation(duration02, transform.forward * 2, vibrato: 10, randomness: 90).SetEase(Ease.InBounce);
+            transform.DOShakeRotation(duration02, transform.forward * 2, vibrato: 10, randomness: 90).SetEase(Ease.InBounce).OnComplete(() => {
+                callback?.Invoke();
+            });
         }
 
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.CompareTag("Down"))
             {
+                OnGaraNextBus();
                 canCollideWitOtherVehicle = false;
                 movingZdir.Pause();
                 Debug.Log("HitDown");
@@ -372,12 +365,19 @@ namespace TJ.Scripts
             if (canCollideWitOtherVehicle && other.TryGetComponent(out Vehicle vehicle) &&
                 vehicle.canCollideWitOtherVehicle)
             {
+
+                if(!ColliderBus.enabled)
+                {
+                    return;
+                }
+
                 if (slot && canCollideWitOtherVehicle)
                     slot.isOccupied = false;
                 movingZdir.Pause();
 
                 if (!isCollided)
                 {
+                    ColliderBus.enabled = false;
                     if (isMovingStraight && counter == 0 && isMovingForward)
                     {
                         counter++;
@@ -388,8 +388,11 @@ namespace TJ.Scripts
                             other.ClosestPoint(transform.position + new Vector3(0, 0.25f, 0)), Quaternion.identity);
                     }
 
-                    vehicle.ShakeVehicle();
-                    transform.DOMove(originalPosition, speedMove).SetSpeedBased().SetEase(Ease.OutBack)
+                    vehicle.ShakeVehicle(() => {
+                        ColliderBus.enabled = true;
+                    });
+
+                    transform.DOMove(originalPosition, speedMove).SetSpeedBased()
                         .OnComplete(() =>
                         {
                             counter = 0;
@@ -401,6 +404,8 @@ namespace TJ.Scripts
 
             if (other.gameObject.CompareTag("Border") && !isCollided && isBorder)
             {
+                OnGaraNextBus();
+
                 isBorder = false;
                 isCollided = true;
                 isMovingStraight = false;
@@ -413,6 +418,8 @@ namespace TJ.Scripts
 
             if (other.gameObject.CompareTag("Upborder") && !isCollided && isColliderUpBorder)
             {
+                OnGaraNextBus();
+
                 isColliderUpBorder = false;
                 isCollided = true;
                 isMovingStraight = false;

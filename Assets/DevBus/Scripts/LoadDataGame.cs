@@ -12,6 +12,9 @@ public class LoadDataGame : Singleton<LoadDataGame>
     [SerializeField] GameObject prefabVan;
     [SerializeField] GameObject prefabBus;
 
+    [SerializeField] GameObject PefabGarageObstacle;
+
+
     [SerializeField] Transform parent;
     [SerializeField] VehicleController vehicleController;
 
@@ -26,21 +29,68 @@ public class LoadDataGame : Singleton<LoadDataGame>
 
         levelSO = GetLevel();
 
-        foreach (var da in levelSO.busPosDatas)
+        List<Garage> garages = new();
+
+        foreach (var turn in levelSO.tunnelDataPacks)
         {
+            var obj = Instantiate(PefabGarageObstacle, parent);
+            obj.transform.position = turn.position;
+            obj.transform.rotation = turn.rotation;
+
+            var ga = obj.GetComponent<Garage>();
+            ga.tunnelDataPack = turn;
+            garages.Add(ga);
+
+            foreach(var bus in turn.datas)
+            {
+                var objBus = GetObjectIntanceBus(bus.busType);
+                var objIn = Instantiate(objBus, null);
+                objIn.transform.parent = obj.transform;
+                objIn.SetActive(false);
+                objIn.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
+                objIn.transform.rotation = obj.transform.rotation;
+
+                var cpn = objIn.GetComponent<Vehicle>();
+                ga.vehicles.Add(cpn);
+                cpn.ChangeColor(bus.color);
+            }
+        }
+
+        for(int i = 0; i < levelSO.busPosDatas.Count; i++)
+        {
+            var da = levelSO.busPosDatas[i];
+            Garage gara = null;
+            foreach (var ga in garages)
+            {
+                if(i.Equals(ga.tunnelDataPack.lockBusIndex))
+                {
+                    gara = ga;
+                    break;
+                }
+            }
+
             var obj = GetObjectIntanceBus(da.type);
 
             var objIn = Instantiate(obj, parent);
-            //  var cpn = objIn.GetComponent<Vehicle>();
-
-            //  cpn.StartCoroutine(cpn.SetPoint(da.position));
+            objIn.name = i.ToString();
 
             objIn.transform.position = da.position;
             objIn.transform.rotation = da.rotation;
             objIn.transform.localScale += Vector3.one * scaleAdd;
 
-            objIn.GetComponent<Vehicle>().ChangeColor(da.color);
+            var cpn = objIn.GetComponent<Vehicle>();
+            cpn.ChangeColor(da.color);
+            cpn.busPosData = da;
 
+            if(gara != null)
+            {
+                gara.obstacle.Add(cpn);
+            }
+        }
+
+        foreach (var ga in garages)
+        {
+            ga.Init();
         }
 
         vehicleController.Init();
