@@ -78,6 +78,11 @@ public class LoadDataGame : Singleton<LoadDataGame>
             objIn.transform.rotation = da.rotation;
             objIn.transform.localScale += Vector3.one * scaleAdd;
 
+            if(da.type.Equals(BusType.Bus))
+            {
+                objIn.transform.position += new Vector3(0, 0.091f, 0);
+            }
+
             var cpn = objIn.GetComponent<Vehicle>();
             cpn.ChangeColor(da.color);
             cpn.busPosData = da;

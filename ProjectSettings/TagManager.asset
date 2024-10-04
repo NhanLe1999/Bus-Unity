@@ -8,6 +8,7 @@ TagManager:
   - Upborder
   - Vehicle
   - Down
+  - BorderLeft
   layers:
   - Default
   - TransparentFX
