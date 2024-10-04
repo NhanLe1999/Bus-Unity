@@ -31,16 +31,13 @@ public class Vehicle : MonoBehaviour
     public bool isMovingForward = false;
     public Garage garage;
     private bool isNext = false;
+    [SerializeField] GameObject objsMoke = null;
 
     public int SeatCount => seats.Count;
 
     float duration01 = 0.1f * 2.0f; //0.1f
-    float duration03 = 0.3f * 2.0f; //0.3f
-    float duration05 = 0.5f * 2.0f; //0.5f
     float duration02 = 0.2f * 2.0f; //0.2f
-    float duration08 = 0.8f * 2.0f; //0.8f
     float dorotate = 0.1f;
-
     float speedMove = 9.0f;
 
     public BusPosData busPosData;
@@ -104,17 +101,22 @@ public class Vehicle : MonoBehaviour
 
     public void OnMouse()
     {
-        Debug.Log("Mouse" + "moving:" + isMovingStraight + "");
+
         if (isMovingStraight /*|| GameManager.instance.gameOver || EventSystem.current.IsPointerOverGameObject()*/)
         {
-            //  PlayerManager.Instance.textMeshProUGUI.text = "break_1_" + isMovingStraight;
+            return;
+        }
+
+        if (PowerUps.instance.isUseSkillVip)
+        {
+            PowerUps.instance.isUseSkillVip = false;
+            OnSkillVipCar();
             return;
         }
 
 
         if (garage != null && !garage.canMoveNext)
         {
-            //   PlayerManager.Instance.textMeshProUGUI.text = "break_2";
             return;
         }
 
@@ -128,7 +130,7 @@ public class Vehicle : MonoBehaviour
             Vibration.Vibrate(40);
             Vector3 targetPosition =
                 transform.position +
-                transform.forward * (hitInfo.distance + 1); // Slightly before the collision point
+                transform.forward * (hitInfo.distance + 1);
             movingZdir = transform.DOMove(targetPosition, speedMove).SetSpeedBased().SetEase(Ease.InQuad);
 
 
@@ -491,35 +493,32 @@ public class Vehicle : MonoBehaviour
                         ColliderBus.enabled = true;
 
                         MoveToSlot(() => {
-                            foreach (var parts in removableParts)
-                            {
-                                parts.SetActive(false);
-                            }
-
-                            foreach (var parts in openvableParts)
-                            {
-                                parts.SetActive(true);
-                            }
+                            OnEndMoveBus();
                         });
                     });
                 }
                 else
                 {
                     MoveToSlot(() => {
-                        foreach (var parts in removableParts)
-                        {
-                            parts.SetActive(false);
-                        }
-
-                        foreach (var parts in openvableParts)
-                        {
-                            parts.SetActive(true);
-                        }
+                        OnEndMoveBus();
                     });
                 }
             });
         });
 
+    }
+
+    void OnEndMoveBus()
+    {
+        foreach (var parts in removableParts)
+        {
+            parts.SetActive(false);
+        }
+
+        foreach (var parts in openvableParts)
+        {
+            parts.SetActive(true);
+        }
     }
 
     public void MoveToTargetFromUpBorder()
@@ -560,14 +559,7 @@ public class Vehicle : MonoBehaviour
                     transform.DORotateQuaternion(newRota, dorotate).OnComplete(() =>
                     {
                         callback?.Invoke();
-                        isMovingStraight = false;
-                        ParkingManager.instance.parkedVehicles.Add(this);
-                        transform.parent = slot.transform;
-                        GetComponent<BoxCollider>().enabled = false;
-                        Debug.Log("Moved to slot");
-                        if (!PlayerManager.instance.isColormatched)
-                            EventManager.OnNewVehArrived?.Invoke();
-                        GetComponent<AudioSource>().enabled = false;
+                        OnEndBus();
                     });
                 });
             });
@@ -585,5 +577,65 @@ public class Vehicle : MonoBehaviour
                  })
                  .SetDelay(0.09f)
                  .SetEase(Ease.OutBack);
+    }
+
+    public void OnSkillVipCar()
+    {
+        slot = ParkingManager.instance.CheckForFreeSlot();
+
+        if(slot == null)
+        {
+            return;
+        }
+
+        objsMoke.SetActive(false);
+
+        slot.isOccupied = true;
+        VehicleController.instance.RemoveVehicle(this);
+
+        ColliderBus.enabled = false;
+        Transform road = VehicleController.instance.Road;
+
+        Vector3[] path = new Vector3[]
+        {
+                new Vector3(transform.position.x, transform.position.y + 1.0f, transform.position.z)
+        };
+
+        Vector3[] waypoints2 = new Vector3[]
+       {
+                new(slot.stopPoint.position.x, transform.position.y + 0.01f, slot.stopPoint.position.z),
+       };
+
+        ChangeScale(false);
+
+        var newRota = slot.stopPoint.rotation;
+
+        transform.DOPath(path, speedMove, PathType.CatmullRom).SetSpeedBased().OnComplete(() => {
+            transform.DORotateQuaternion(newRota, dorotate).OnComplete(() =>
+            {
+                transform.DOPath(waypoints2, speedMove, PathType.CatmullRom).SetSpeedBased().OnComplete(() =>
+                {
+                    var newRota = slot.stopPoint.rotation;
+
+                    transform.DORotateQuaternion(newRota, dorotate).OnComplete(() =>
+                    {
+                        OnEndMoveBus();
+                        OnEndBus();
+                    });
+                });
+            });
+        });
+    }
+
+    void OnEndBus()
+    {
+        isMovingStraight = false;
+        ParkingManager.instance.parkedVehicles.Add(this);
+        transform.parent = slot.transform;
+        GetComponent<BoxCollider>().enabled = false;
+        Debug.Log("Moved to slot");
+        if (!PlayerManager.instance.isColormatched)
+            EventManager.OnNewVehArrived?.Invoke();
+        GetComponent<AudioSource>().enabled = false;
     }
 }

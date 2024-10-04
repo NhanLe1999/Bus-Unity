@@ -2505,6 +2505,15 @@ MonoBehaviour:
   playersInSeat: 0
   isMovingForward: 0
   garage: {fileID: 0}
+  objsMoke: {fileID: 5525855978953363342}
+  busPosData:
+    color: 0
+    type: 0
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    nodeIndexList: 
+    backTrackList: 
+    weight: 0
 --- !u!65 &8571047725363125790
 BoxCollider:
   m_ObjectHideFlags: 0

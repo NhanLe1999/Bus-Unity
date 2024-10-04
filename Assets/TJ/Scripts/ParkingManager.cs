@@ -36,47 +36,10 @@ namespace TJ.Scripts
             }
             return null;
         }
-        /*public bool GetSlot(Vehicle veh)
+
+        private void Update()
         {
-            for (int i = 0; i < slots.Count; i++)
-            {
-                if (!slots[i].isOccupied)
-                {
-                    //MoveToSlot(slots[i], veh);
-                    return true;
-                }
-            }
-            return false;
+            
         }
-   
-        public bool CheckIfAllOccupied()
-        {
-            int occupiedCount = 0;
-            for (int i = 0; i < slots.Count; i++)
-            {
-                if (slots[i].isOccupied)
-                {
-                    occupiedCount++;
-                }
-            }
-
-            if (occupiedCount == slots.Count)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public void findOccupiedSlots()
-        {
-            for (int i = 0; i < slots.Count; i++)
-            {
-                if (slots[i].isOccupied)
-                {
-                    occupiedSlots.Add(slots[i]);
-                }
-            }
-        }*/
     }
 }
