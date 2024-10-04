@@ -8,10 +8,10 @@ public class UiManager : MonoBehaviour
 {
 
     public static UiManager instance;
-    public GameObject gameOverPanle, winPanel;
+    public GameObject gameOverPanle, winPanel, uiPause;
 
     [SerializeField] private Button restartButtonForTest;
-    [SerializeField] private Button btnRestart;
+    [SerializeField] private Button btnSetting;
     [SerializeField] private Button btnNext;
     [SerializeField] private Button skipButton;
     [SerializeField] private TextMeshProUGUI levelText;
@@ -30,13 +30,7 @@ public class UiManager : MonoBehaviour
             SoundController.Instance.PlayOneShot(SoundController.Instance.buttonSound);
             DOVirtual.DelayedCall(0.3f, LevelManager.ReloadLevel);
         });
-        //gameover panel restart Button
-        btnRestart.onClick.AddListener(() =>
-        {
-            Vibration.Vibrate(30);
-            SoundController.Instance.PlayOneShot(SoundController.Instance.buttonSound);
-            HelperManager.OnLoadScene(ScStatic.GAME_SCENE);
-        });
+
         //next button for WinPanel
         btnNext.onClick.AddListener(() =>
         {
@@ -49,6 +43,14 @@ public class UiManager : MonoBehaviour
             LevelManager.LevelProgressed();
             SoundController.Instance.PlayOneShot(SoundController.Instance.buttonSound);
             DOVirtual.DelayedCall(0.3f, LevelManager.LoadScene);
+        });
+
+        //Setting
+        btnSetting.onClick.AddListener(() =>
+        {
+            Vibration.Vibrate(30);
+            SoundController.Instance.PlayOneShot(SoundController.Instance.buttonSound);
+            HelperManager.OnLoadScene(ScStatic.GAME_SCENE);
         });
 
         levelText.text = "Level " + LevelManager.GetCurrentLeveLNumber();
