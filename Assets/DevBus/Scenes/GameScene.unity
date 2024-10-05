@@ -5610,6 +5610,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4502774769914144233, guid: fe85b2be9657d7446a4d3aaa0e6ead85,
+        type: 3}
+      propertyPath: m_enableWordWrapping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4656296574313684132, guid: fe85b2be9657d7446a4d3aaa0e6ead85,
         type: 3}
       propertyPath: m_RootOrder
