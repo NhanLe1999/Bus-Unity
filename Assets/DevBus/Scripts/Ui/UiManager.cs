@@ -10,7 +10,6 @@ public class UiManager : MonoBehaviour
     public static UiManager instance;
     public GameObject gameOverPanle, winPanel, uiPause;
 
-    [SerializeField] private Button restartButtonForTest;
     [SerializeField] private Button btnSetting;
     [SerializeField] private Button btnNext;
     [SerializeField] private Button skipButton;
@@ -23,14 +22,6 @@ public class UiManager : MonoBehaviour
 
     private void Start()
     {
-        //Restart For Testing
-        restartButtonForTest.onClick.AddListener(() =>
-        {
-            Vibration.Vibrate(30);
-            Audio.Play(ScStatic.SFX_BUTTONSOUND);
-            DOVirtual.DelayedCall(0.3f, LevelManager.ReloadLevel);
-        });
-
         //next button for WinPanel
         btnNext.onClick.AddListener(() =>
         {
@@ -45,15 +36,12 @@ public class UiManager : MonoBehaviour
             DOVirtual.DelayedCall(0.3f, LevelManager.LoadScene);
         });
 
-        //Setting
-        btnSetting.onClick.AddListener(() =>
-        {
-            Vibration.Vibrate(30);
-            Audio.Play(ScStatic.SFX_BUTTONSOUND);
-            HelperManager.OnLoadScene(ScStatic.GAME_SCENE);
-        });
+        levelText.text = "Level " + HelperManager.DataPlayer.NumLevel.ToString();
+    }
 
-        levelText.text = "Level " + LevelManager.GetCurrentLeveLNumber();
+    public void OnShowSetting()
+    {
+        TogglePanel(uiPause, true);
     }
 
     public void TogglePanel(GameObject panel, bool value)

@@ -34,8 +34,6 @@ namespace TJ.Scripts
         public int numMidAndPick = 12;
         public int numPickAndSpawn = 9;
 
-        public TextMeshProUGUI textMeshProUGUI;
-
         public Camera cam;
 
         private void Awake()
@@ -523,25 +521,15 @@ namespace TJ.Scripts
             {
                 return;
             }
-
-
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                textMeshProUGUI.text = "mouseDown";
-            }
+            
 
             if (Input.GetMouseButtonUp(0))
             {
-                textMeshProUGUI.text = "mouseUp";
-
                  Ray ray = cam.ScreenPointToRay(Input.mousePosition);
                 Vector3 mouseScreenPosition = Input.mousePosition;
                // mouseScreenPosition.z = -cam.transform.position.z;
                 Vector3 mouseWorldPosition = cam.ScreenToWorldPoint(mouseScreenPosition);
                 RaycastHit[] hits = Physics.RaycastAll(ray);
-
-                textMeshProUGUI.text = hits.Length.ToString();
 
                 foreach (var hit in hits)
                 {
@@ -552,8 +540,6 @@ namespace TJ.Scripts
                         var cpn = hit.transform.GetComponent<Vehicle>();
                         if(cpn != null)
                         {
-                            textMeshProUGUI.text = hit.transform.name + "1";
-
                             cpn.OnMouse();
                             return;
                         }

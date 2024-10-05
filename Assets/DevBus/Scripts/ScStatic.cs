@@ -7,6 +7,7 @@ public static class ScStatic
     public static string PLAYERDATA = "Bus_Data";
 
     public static string GAME_SCENE = "GameScene";
+    public static string HOME_SCENE = "HomeScene";
 
 
     public static string SFX_TAPSOUND = "SFX_TAPSOUND";

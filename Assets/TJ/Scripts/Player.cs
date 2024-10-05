@@ -76,7 +76,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         VehicleController.instance.UpdatePlayerCount();
         PlayerManager.instance.RepositionPlayers();
-        Audio.Play(ScStatic.SFX_SHORT_SOUND);
+        Audio.Play(ScStatic.SFX_SHORT_SOUND, 1.0f, false, true);
 
     }
 

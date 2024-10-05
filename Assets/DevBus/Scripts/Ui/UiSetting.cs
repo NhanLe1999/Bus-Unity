@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,12 +24,22 @@ public class DataButtonSetting
 public class UiSetting : MonoBehaviour
 {
     [SerializeField] List<DataButtonSetting> dataButtonSettings = null;
+    [SerializeField] Transform trsObjScale = null;
 
     void Start()
     {
+        
+    }
+
+    private void OnEnable()
+    {
+        LoadDataGame.Instance.IsPause = true;
         OnEnableBtn(TypeBtnSetting.MUSIC, HelperManager.DataPlayer.isPlayMusic);
         OnEnableBtn(TypeBtnSetting.SOUND, HelperManager.DataPlayer.isPlaySound);
         OnEnableBtn(TypeBtnSetting.VIBRATION, HelperManager.DataPlayer.isVbration);
+
+        trsObjScale.DOScale(Vector3.one, 0.25f).SetEase(Ease.OutBack).OnComplete(() => {
+        });
     }
 
     private void OnEnableBtn(TypeBtnSetting type, bool isEnable)
@@ -70,4 +81,21 @@ public class UiSetting : MonoBehaviour
         OnEnableBtn(TypeBtnSetting.VIBRATION, HelperManager.DataPlayer.isVbration);
     }
 
+    public void OnHomeClick()
+    {
+        HelperManager.OnLoadScene(ScStatic.HOME_SCENE);
+    }
+
+    public void OnRestartClick()
+    {
+        HelperManager.OnLoadScene(ScStatic.GAME_SCENE);
+    }
+
+    public void OnClose()
+    {
+        trsObjScale.DOScale(Vector3.zero, 0.25f).OnComplete(() => {
+            gameObject.SetActive(false);
+            LoadDataGame.Instance.IsPause = false;
+        });
+    }    
 }
