@@ -49,4 +49,14 @@ public class UiManager : MonoBehaviour
         panel.SetActive(value);
     }
 
+    public void OnHomeClick()
+    {
+        HelperManager.OnLoadScene(ScStatic.HOME_SCENE);
+    }
+
+    public void OnRestartClick()
+    {
+        HelperManager.OnLoadScene(ScStatic.GAME_SCENE);
+    }
+
 }

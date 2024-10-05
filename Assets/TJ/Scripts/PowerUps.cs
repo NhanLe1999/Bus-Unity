@@ -87,7 +87,7 @@ public class PowerUps : MonoBehaviour
 
     private void ShowPoupSkillVip()
     {
-        SetPowerUpPanel(PowerUp.Vip, "Vip", "Rearrange the <color=green>COLOR</color> of the Vehicles in the parking lot", carShuffleSprite);
+        SetPowerUpPanel(PowerUp.Vip, "Vip", "Rearrange the <color=green>COLOR</color> of the Vehicles in the parking lot", vipVehicleSprite);
         useWithCoinsButton.onClick.AddListener(() => UsePowerUpWithCoins(VipPlayerCost, OnSkillTrain));
         useWithAdsButton.onClick.AddListener(() =>
         {

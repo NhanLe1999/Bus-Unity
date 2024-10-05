@@ -43,8 +43,8 @@ public class LoadDataGame : Singleton<LoadDataGame>
             foreach(var bus in turn.datas)
             {
                 var objBus = GetObjectIntanceBus(bus.busType);
-                var objIn = Instantiate(objBus, null);
-                objIn.transform.parent = obj.transform;
+                var objIn = Instantiate(objBus, parent);
+                objIn.transform.parent = parent;
                 objIn.SetActive(false);
                 objIn.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
                 objIn.transform.rotation = obj.transform.rotation;
