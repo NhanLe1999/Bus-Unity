@@ -8,7 +8,7 @@ namespace TJ.Scripts
     {
         public static SoundController Instance;
         public AudioSource audioSource;
-        public AudioClip tapSound, buttonSound, hitSound, sort, full, win, fail, nocoinPOP;
+      //  public AudioClip tapSound, buttonSound, hitSound, sort, full, win, fail, nocoinPOP;
         
         public AudioClip moving;
 
@@ -25,16 +25,6 @@ namespace TJ.Scripts
         public void PlayOneShot(AudioClip clip)
         {
             audioSource.PlayOneShot(clip);
-        }
-
-        public void PlayFullSound()
-        {
-            if (!isFullSoundPlaying)
-            {
-                audioSource.PlayOneShot(full);
-                isFullSoundPlaying = true;
-                DOVirtual.DelayedCall(full.length, ()=>isFullSoundPlaying = false);
-            }
         }
     }
 }

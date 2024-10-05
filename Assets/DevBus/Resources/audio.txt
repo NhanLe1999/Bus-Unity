@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<AudioSerialization xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <files>
+    <AudioFile>
+      <fileName>Music_Game</fileName>
+      <fullPath>Music/</fullPath>
+    </AudioFile>
+
+    <AudioFile>
+      <fileName>SFX_TAPSOUND</fileName>
+      <fullPath>Sounds/</fullPath>
+    </AudioFile>
+    <AudioFile>
+      <fileName>SFX_BUTTONSOUND</fileName>
+      <fullPath>Sounds/</fullPath>
+    </AudioFile>
+    <AudioFile>
+      <fileName>SFX_HIT_SOUND</fileName>
+      <fullPath>Sounds/</fullPath>
+    </AudioFile>
+    <AudioFile>
+      <fileName>SFX_SHORT_SOUND</fileName>
+      <fullPath>Sounds/</fullPath>
+    </AudioFile>
+    <AudioFile>
+      <fileName>SFX_FULL_SOUND</fileName>
+      <fullPath>Sounds/</fullPath>
+    </AudioFile>
+    <AudioFile>
+      <fileName>SFX_WIN_SOUND</fileName>
+      <fullPath>Sounds/</fullPath>
+    </AudioFile>
+    <AudioFile>
+      <fileName>SFX_FAIL_SOUND</fileName>
+      <fullPath>Sounds/</fullPath>
+    </AudioFile>
+    <AudioFile>
+      <fileName>SFX_MOVING_SOUND</fileName>
+      <fullPath>Sounds/</fullPath>
+    </AudioFile>
+    <AudioFile>
+      <fileName>SFX_NOCOIN_SOUND</fileName>
+      <fullPath>Sounds/</fullPath>
+    </AudioFile>
+  </files>
+</AudioSerialization>

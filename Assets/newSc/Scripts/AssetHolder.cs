@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class AssetHolder : SingleTons<AssetHolder>
 {
-	public AudioClipSO audioClipSO;
 
 	public ProjectileSO projectileSO;
 

@@ -27,7 +27,7 @@ public class UiManager : MonoBehaviour
         restartButtonForTest.onClick.AddListener(() =>
         {
             Vibration.Vibrate(30);
-            SoundController.Instance.PlayOneShot(SoundController.Instance.buttonSound);
+            Audio.Play(ScStatic.SFX_BUTTONSOUND);
             DOVirtual.DelayedCall(0.3f, LevelManager.ReloadLevel);
         });
 
@@ -35,13 +35,13 @@ public class UiManager : MonoBehaviour
         btnNext.onClick.AddListener(() =>
         {
             Vibration.Vibrate(30);
-            SoundController.Instance.PlayOneShot(SoundController.Instance.buttonSound);
+            Audio.Play(ScStatic.SFX_BUTTONSOUND);
             HelperManager.OnLoadScene(ScStatic.GAME_SCENE);
         });
         skipButton.onClick.AddListener(() =>
         {
             LevelManager.LevelProgressed();
-            SoundController.Instance.PlayOneShot(SoundController.Instance.buttonSound);
+            Audio.Play(ScStatic.SFX_BUTTONSOUND);
             DOVirtual.DelayedCall(0.3f, LevelManager.LoadScene);
         });
 
@@ -49,7 +49,7 @@ public class UiManager : MonoBehaviour
         btnSetting.onClick.AddListener(() =>
         {
             Vibration.Vibrate(30);
-            SoundController.Instance.PlayOneShot(SoundController.Instance.buttonSound);
+            Audio.Play(ScStatic.SFX_BUTTONSOUND);
             HelperManager.OnLoadScene(ScStatic.GAME_SCENE);
         });
 

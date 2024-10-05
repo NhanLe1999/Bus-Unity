@@ -50,7 +50,7 @@ namespace Map
             _playButton.onClick.AddListener(() =>
             {
                 Vibration.Vibrate(30);
-                SoundController.Instance.PlayOneShot(SoundController.Instance.buttonSound);
+                Audio.Play(ScStatic.SFX_BUTTONSOUND);
                 DOVirtual.DelayedCall(0.2f, LevelManager.LoadLevel);
             });
             /*Vibration.Init();

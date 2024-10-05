@@ -46,14 +46,14 @@ public class PowerUps : MonoBehaviour
         {
             LoadDataGame.Instance.IsPause = true;
             ShowCarShufflePanel();
-            SoundController.Instance.PlayOneShot(SoundController.Instance.buttonSound, 0.5f);
+            Audio.Play(ScStatic.SFX_BUTTONSOUND);
             Vibration.Vibrate(30);
         });
         btn_ShufflePlayers.onClick.AddListener(() =>
         {
             LoadDataGame.Instance.IsPause = true;
             ShowPlayerSortPanel();
-            SoundController.Instance.PlayOneShot(SoundController.Instance.buttonSound, 0.5f);
+            Audio.Play(ScStatic.SFX_BUTTONSOUND);
             Vibration.Vibrate(30);
         });
 
@@ -61,13 +61,13 @@ public class PowerUps : MonoBehaviour
         {
             LoadDataGame.Instance.IsPause = true;
             ShowPoupSkillVip();
-            SoundController.Instance.PlayOneShot(SoundController.Instance.buttonSound, 0.5f);
+            Audio.Play(ScStatic.SFX_BUTTONSOUND);
             Vibration.Vibrate(30);
         });
         panelCloseButton.onClick.AddListener(() =>
         {
             ClosePanel();
-            SoundController.Instance.PlayOneShot(SoundController.Instance.buttonSound, 0.5f);
+            Audio.Play(ScStatic.SFX_BUTTONSOUND);
             Vibration.Vibrate(30);
         });
     }
@@ -97,7 +97,7 @@ public class PowerUps : MonoBehaviour
             this.StartCoroutine(onEnablePause());
             ClosePanel();
             OnSkillTrain();
-            SoundController.Instance.PlayOneShot(SoundController.Instance.buttonSound, 0.5f);
+            Audio.Play(ScStatic.SFX_BUTTONSOUND);
             Vibration.Vibrate(30);
         });
     }
@@ -114,7 +114,7 @@ public class PowerUps : MonoBehaviour
             this.StartCoroutine(onEnablePause());
             ClosePanel();
             VehicleController.instance.RandomVehicleColors();
-            SoundController.Instance.PlayOneShot(SoundController.Instance.buttonSound, 0.5f);
+            Audio.Play(ScStatic.SFX_BUTTONSOUND);
             Vibration.Vibrate(30);
         });
     }
@@ -131,7 +131,7 @@ public class PowerUps : MonoBehaviour
             this.StartCoroutine(onEnablePause());
             ClosePanel();
             ShufflePlayersPowerUp();
-            SoundController.Instance.PlayOneShot(SoundController.Instance.buttonSound, 0.5f);
+            Audio.Play(ScStatic.SFX_BUTTONSOUND);
             Vibration.Vibrate(30);
         });
     }
@@ -190,7 +190,7 @@ public class PowerUps : MonoBehaviour
             PlayInfoPopup("Not Enough Coins!");
             return;
         }
-        SoundController.Instance.PlayOneShot(SoundController.Instance.buttonSound, 0.5f);
+        Audio.Play(ScStatic.SFX_BUTTONSOUND);
         Vibration.Vibrate(30);
     }
 
@@ -255,7 +255,7 @@ public class PowerUps : MonoBehaviour
         {
             notEnoughCoinsPopup.transform.DOScale(Vector3.zero, 0.2f).OnComplete(() => isInfoPlaying = false);
         });
-        SoundController.Instance.PlayOneShot(SoundController.Instance.nocoinPOP, 0.5f);
+        Audio.Play(ScStatic.SFX_NOCOIN_SOUND);
         Vibration.Vibrate(30);
     }
     private void ResetButtonListeners()

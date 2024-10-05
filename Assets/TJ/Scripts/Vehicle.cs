@@ -228,8 +228,7 @@ public class Vehicle : MonoBehaviour
                 });
             });
 
-
-        SoundController.Instance.PlayFullSound();
+        Audio.Play(ScStatic.SFX_FULL_SOUND);
         SoundController.Instance.PlayOneShot(SoundController.Instance.moving);
     }
 
@@ -256,7 +255,7 @@ public class Vehicle : MonoBehaviour
     public void MoveCarStraight()
     {
         Vibration.Vibrate(20);
-        SoundController.Instance.PlayOneShot(SoundController.Instance.tapSound, 0.5f);
+        Audio.Play(ScStatic.SFX_TAPSOUND);
         slot.isOccupied = true;
         isMovingStraight = true;
         isMovingForward = true;
@@ -388,7 +387,7 @@ public class Vehicle : MonoBehaviour
                     counter++;
                     Debug.Log("playing straight");
                     GetComponent<AudioSource>().enabled = false;
-                    SoundController.Instance.PlayOneShot(SoundController.Instance.hitSound);
+                    Audio.Play(ScStatic.SFX_HIT_SOUND);
                     EffectsManager.instance.PlayEffect(EffectsManager.instance.hitEffect,
                         other.ClosestPoint(transform.position + new Vector3(0, 0.25f, 0)), Quaternion.identity);
                 }

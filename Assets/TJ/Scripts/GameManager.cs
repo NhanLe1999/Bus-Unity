@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
         if (ChekIfSlotFull() && IfSameColorVehicleParked() == false)
         {
             gameOver = true;
-            SoundController.Instance.PlayOneShot(SoundController.Instance.fail);
+            Audio.Play(ScStatic.SFX_FAIL_SOUND);
             UiManager.instance.TogglePanel(UiManager.instance.gameOverPanle, true);
             Debug.Log("<color=red>Warning: Game Over</color>");
         }
@@ -94,11 +94,12 @@ public class GameManager : MonoBehaviour
                 () => {
                     HelperManager.DataPlayer.NumLevel++;
                 //    HelperManager.OnLoadScene(ScStatic.GAME_SCENE);
-                    SoundController.Instance.PlayOneShot(SoundController.Instance.win);
+                    Audio.Play(ScStatic.SFX_WIN_SOUND);
                 });
 
 
-            DOVirtual.DelayedCall(1.5f, () => SoundController.Instance.PlayOneShot(SoundController.Instance.win));
+            DOVirtual.DelayedCall(1.5f, () => Audio.Play(ScStatic.SFX_WIN_SOUND));
+            
             DOVirtual.DelayedCall(2f, () => UiManager.instance.TogglePanel(UiManager.instance.winPanel, true));
             LevelManager.LevelProgressed();
             Debug.Log("<color=Green>Success: Game Win</color>");
