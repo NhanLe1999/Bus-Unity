@@ -161,7 +161,7 @@ public class Vehicle : MonoBehaviour
 
     private void OnMouseDown()
     {
-        //OnMouse();
+        OnMouse();
         //transform.GetChild(0).DOShakeScale(0.3f, new Vector3(0, 0, 0.2f), 1, 1);
         //Debug.Log("UpdateSeatCount : " + UpdateSeatCountNo());
     }

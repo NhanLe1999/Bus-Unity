@@ -1,60 +1,81 @@
 using System;
+using System.Linq;
 using DG.Tweening;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
 
-namespace TJ.Scripts
+public class Helper : MonoBehaviour
 {
-    public class Helper : MonoBehaviour
+    public static Helper instance;
+
+    public Transform[] points;
+    public BoxCollider[] vehicleColliders;
+
+    public GameObject handIcon;
+    public TextMeshPro info;
+    public string carTXT;
+    public string vanTXT;
+    public string busTXT;
+
+    public Vector3 pointAdd = Vector3.zero;
+
+    private int count = 0;
+
+
+    private void Awake()
     {
-        public static Helper instance;
+        instance = this;
+    }
 
-        public Transform[] points;
-        public BoxCollider[] vehicleColliders;
+    private void Start()
+    {
+       
+    }
 
-        public GameObject handIcon;
-        public TextMeshPro info;
-        public string carTXT;
-        public string vanTXT;
-        public string busTXT;
-
-        private int count = 0;
-
-
-        private void Awake()
+    private void OnEnable()
+    {
+        for (int i = 0; i < LoadDataGame.Instance.vehicleController.vehicles.Length; i++)
         {
-            instance = this;
+            var vec = LoadDataGame.Instance.vehicleController.vehicles[i];
+            points[i] = vec.transform;
+            vehicleColliders[i] = vec.GetComponent<BoxCollider>();
         }
 
-        private void Start()
+        onInit();
+    }
+
+
+    private void onInit()
+    {
+        if (points.Length > 0)
+            handIcon.transform.DOMove(points[0].position + pointAdd, 0.5f);
+        if (vehicleColliders.Length > 0)
+            vehicleColliders[0].enabled = true;
+    }
+
+    public void MoveHand()
+    {
+        count++;
+        if (count < points.Length && count < vehicleColliders.Length)
         {
-            if (points.Length > 0)
-                handIcon.transform.DOMove(points[0].position, 0.5f);
-            if (vehicleColliders.Length > 0)
-                vehicleColliders[0].enabled = true;
+            handIcon.transform.DOMove(points[count].position + pointAdd, 0.5f);
+            vehicleColliders[count].enabled = true;
+        }
+        else
+        {
+            handIcon.SetActive(false);
         }
 
-        public void MoveHand()
-        {
-            count++;
-            if (count < points.Length && count < vehicleColliders.Length)
-            {
-                handIcon.transform.DOMove(points[count].position, 0.5f);
-                vehicleColliders[count].enabled = true;
-            }
-            else
-            {
-                handIcon.SetActive(false);
-            }
+        var vech = vehicleColliders[count].GetComponent<Vehicle>();
+        var set = vech.SeatCount;
 
-            info.text = count switch
-            {
-                1 => carTXT,
-                2 => busTXT,
-                3 => vanTXT,
-                _ => info.text
-            };
-        }
+        info.text = set switch
+        {
+            4 => carTXT,
+            10 => busTXT,
+            6 => vanTXT,
+            _ => info.text
+        };
     }
 }

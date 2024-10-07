@@ -12,12 +12,11 @@ public class LoadDataGame : Singleton<LoadDataGame>
     [SerializeField] GameObject prefabBus;
 
     [SerializeField] GameObject PefabGarageObstacle;
-
-
     [SerializeField] Transform parent;
-    [SerializeField] VehicleController vehicleController;
-
+    public VehicleController vehicleController;
     [SerializeField] float scaleAdd = 0.0f;
+
+    [SerializeField] Transform objHelp = null;
 
     public bool IsPause = false;
 
@@ -98,6 +97,11 @@ public class LoadDataGame : Singleton<LoadDataGame>
         }
 
         vehicleController.Init();
+
+        if(HelperManager.DataPlayer.NumLevel == 1)
+        {
+            objHelp.gameObject.SetActive(true);
+        }
     }
 
     BusLevelSO GetLevel()

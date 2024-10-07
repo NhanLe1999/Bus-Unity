@@ -517,6 +517,7 @@ namespace TJ.Scripts
 
         void Update()
         {
+            return;
             if(LoadDataGame.Instance.IsPause)
             {
                 return;
