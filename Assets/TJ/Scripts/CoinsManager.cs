@@ -18,21 +18,23 @@ namespace Assets.TJ.Scripts
         }
         public int GetTotalCoins()
         {
-            return PlayerPrefs.GetInt(PlayerPrefsManager.TotalCoins, 9990);
+            return HelperManager.DataPlayer.TotalCoin;
         }
 
         public void AddCoins(int amount)
         {
             int coins = GetTotalCoins();
             coins += amount;
-            PlayerPrefs.SetInt(PlayerPrefsManager.TotalCoins, coins);
+            HelperManager.UpdateItemForSkill(TYPE_ITEM.COIN, coins);
             UpdateCoinTxt();
         }
         public void DeductCoins(int amount)
         {
             int coins = GetTotalCoins();
             coins -= amount;
-            PlayerPrefs.SetInt(PlayerPrefsManager.TotalCoins, coins);
+
+            HelperManager.UpdateItemForSkill(TYPE_ITEM.COIN, coins);
+
             UpdateCoinTxt();
         }
         public void UpdateCoinTxt()

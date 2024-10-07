@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,5 +20,19 @@ public static class ScStatic
     public static string SFX_FAIL_SOUND = "SFX_FAIL_SOUND";
     public static string SFX_MOVING_SOUND = "SFX_MOVING_SOUND";
     public static string SFX_NOCOIN_SOUND = "SFX_NOCOIN_SOUND";
+
+    public static string STATE_LOGIN_NEW = "new";
+    public static string STATE_LOGIN_DEFAUL = "default";
+    public static string STATE_LOGIN_CLAIM = "claim";
+
+
+
+
+    public static string KEY_DAILY_BOUNUS_IS_CLAIM
+    {
+        get { return $"coin_daily_isclaim{HelperManager.DataPlayer.numDayLogin}"; }
+    }
+
+    public static DateTime DayFirstLogin { get; set; }
 
 }

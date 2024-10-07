@@ -59,4 +59,13 @@ public class UiManager : MonoBehaviour
         HelperManager.OnLoadScene(ScStatic.GAME_SCENE);
     }
 
+    public void OnClickClaimWin()
+    {
+
+    }    
+
+    public void OnClickBtnNextWin()
+    {
+        HelperManager.OnLoadScene(ScStatic.GAME_SCENE);
+    }
 }

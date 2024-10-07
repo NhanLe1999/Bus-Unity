@@ -1,6 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
+
+public class DataNumSkillGame
+{
+    public int numCountUse;
+    public TYPE_ITEM typeSkill;
+}
 
 [System.Serializable]
 public class DataPlayer
@@ -10,5 +17,13 @@ public class DataPlayer
     public bool isPlayMusic = true;
     public bool isVbration = true;
 
+    public int NumTotalSpin = 0;
+    public int TotalCoin = 0;
 
+    public int numDayLogin = 0;
+
+    public string stateLogin = ScStatic.STATE_LOGIN_NEW;
+
+
+    public List<DataNumSkillGame> DataNumSkillGame = new();
 }
