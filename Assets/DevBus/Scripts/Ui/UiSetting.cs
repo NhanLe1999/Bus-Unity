@@ -28,15 +28,26 @@ public class UiSetting : MonoBehaviour
 
     void Start()
     {
-        
+       
     }
 
     private void OnEnable()
     {
-        LoadDataGame.Instance.IsPause = true;
+        if(LoadDataGame.Instance != null)
+        {
+            LoadDataGame.Instance.IsPause = true;
+        }
+
         OnEnableBtn(TypeBtnSetting.MUSIC, HelperManager.DataPlayer.isPlayMusic);
         OnEnableBtn(TypeBtnSetting.SOUND, HelperManager.DataPlayer.isPlaySound);
         OnEnableBtn(TypeBtnSetting.VIBRATION, HelperManager.DataPlayer.isVbration);
+        this.StartCoroutine(onPlayAnim());
+       
+    }
+
+    IEnumerator onPlayAnim()
+    {
+        yield return new WaitForEndOfFrame();
 
         trsObjScale.DOScale(Vector3.one, 0.25f).SetEase(Ease.OutBack).OnComplete(() => {
         });

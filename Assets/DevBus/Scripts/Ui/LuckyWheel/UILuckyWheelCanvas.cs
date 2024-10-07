@@ -66,6 +66,7 @@ public class UILuckyWheelCanvas : Dialog<UILuckyWheelCanvas>
     private int index = 0;
     void Start()
     {
+        HomeScene.Instance.objCoin.transform.parent = transform;
         anglePerItem = 360f / itemCount;
         CreateWheelItems();
         btnSpin.interactable = HelperManager.DataPlayer.NumTotalSpin > 0;
@@ -162,6 +163,7 @@ public class UILuckyWheelCanvas : Dialog<UILuckyWheelCanvas>
 
     public void onClose()
     {
+        HomeScene.Instance.objCoin.transform.parent = HomeScene.Instance.transform;
         Hide();
     }
 
