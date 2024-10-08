@@ -1,4 +1,3 @@
-using Assets.TJ.Scripts;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;

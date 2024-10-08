@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TJ.Scripts;
 using UnityEngine;
 
-public class LoadDataGame : Singleton<LoadDataGame>
+public class LoadDataGame : SingletonMono<LoadDataGame>
 {
     [SerializeField] BusLevelSO levelSO = null;
 
@@ -19,6 +19,8 @@ public class LoadDataGame : Singleton<LoadDataGame>
     [SerializeField] Transform objHelp = null;
 
     public bool IsPause = false;
+
+    [SerializeField] Vector3 PointAdd = Vector3.zero;
 
 
     // Start is called before the first frame update

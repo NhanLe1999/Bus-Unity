@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "114734170572",
+    "project_id": "tg06-bus-jam",
+    "storage_bucket": "tg06-bus-jam.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:114734170572:android:71c14e8b0581be05bd1d69",
+        "android_client_info": {
+          "package_name": "com.busjame.puzzlegame"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeJE7FuN-jwfEg4byU9nZ9z18yxHYCgmg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

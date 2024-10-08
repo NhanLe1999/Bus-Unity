@@ -1,0 +1,18 @@
+ảngy.png
+size:189,114
+filter:Linear,Linear
+pma:true
+Ellipse 14 copy 3
+bounds:2,2,110,110
+offsets:1,1,112,112
+Layer 1
+bounds:114,16,96,54
+offsets:5,5,105,62
+rotate:90
+Shape 520
+bounds:170,62,50,16
+offsets:1,1,52,18
+rotate:90
+Shape 524
+bounds:170,43,17,17
+offsets:1,1,19,19

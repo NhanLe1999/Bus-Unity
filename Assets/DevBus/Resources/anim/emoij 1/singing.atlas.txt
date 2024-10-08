@@ -1,0 +1,18 @@
+singing.png
+size:139,118
+filter:Linear,Linear
+pma:true
+Ellipse 14
+bounds:2,6,110,110
+offsets:1,1,112,112
+Ellipse 504 copy
+bounds:114,32,84,16
+offsets:1,1,86,18
+rotate:90
+Shape 2 copy 2
+bounds:114,17,23,13
+offsets:1,1,25,15
+Shape 503
+bounds:114,2,13,22
+offsets:1,1,15,24
+rotate:90
