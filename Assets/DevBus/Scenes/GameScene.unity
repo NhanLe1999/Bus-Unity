@@ -6933,6 +6933,7 @@ MonoBehaviour:
   scaleAdd: 0
   objHelp: {fileID: 1474112409}
   IsPause: 0
+  pointAdd: {x: 0, y: 0.95, z: 0}
 --- !u!4 &1711529411
 Transform:
   m_ObjectHideFlags: 0

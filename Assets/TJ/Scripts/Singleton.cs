@@ -1,22 +1,18 @@
 using UnityEngine;
 
-public class Singleton<Class> : MonoBehaviour where Class : MonoBehaviour
+public abstract class Singleton<T> where T : new()
 {
-    private static Class instance;
+    private static T instance;
 
-    public static Class Instance
+    public static T Instance
     {
         get
         {
+            if (instance == null)
+            {
+                instance = new T();
+            }
             return instance;
-        }
-    }
-
-    protected virtual void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this as Class;
         }
     }
 }

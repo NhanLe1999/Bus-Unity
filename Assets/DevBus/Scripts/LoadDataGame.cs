@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TJ.Scripts;
 using UnityEngine;
 
-public class LoadDataGame : Singleton<LoadDataGame>
+public class LoadDataGame : SingletonMono<LoadDataGame>
 {
     [SerializeField] BusLevelSO levelSO = null;
 
@@ -19,6 +19,7 @@ public class LoadDataGame : Singleton<LoadDataGame>
     [SerializeField] Transform objHelp = null;
 
     public bool IsPause = false;
+    [SerializeField] Vector3 pointAdd = Vector3.zero;
 
 
     // Start is called before the first frame update
@@ -32,7 +33,7 @@ public class LoadDataGame : Singleton<LoadDataGame>
         foreach (var turn in levelSO.tunnelDataPacks)
         {
             var obj = Instantiate(PefabGarageObstacle, parent);
-            obj.transform.position = turn.position;
+            obj.transform.position = turn.position + pointAdd;
             obj.transform.rotation = turn.rotation * Quaternion.Euler(0, 180, 0);
 
             var ga = obj.GetComponent<Garage>();
@@ -72,7 +73,7 @@ public class LoadDataGame : Singleton<LoadDataGame>
             var objIn = Instantiate(obj, parent);
             objIn.name = i.ToString();
 
-            objIn.transform.position = da.position;
+            objIn.transform.position = da.position + pointAdd;
             objIn.transform.rotation = da.rotation;
             objIn.transform.localScale += Vector3.one * scaleAdd;
 
