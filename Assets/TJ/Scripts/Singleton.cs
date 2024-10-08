@@ -1,22 +1,25 @@
 using UnityEngine;
 
-public abstract class Singleton<T> where T : new()
+public class Singleton<Class> : MonoBehaviour where Class : MonoBehaviour
 {
-    private static T instance;
+    private static Class instance;
 
-    public static T Instance
+    public static Class Instance
     {
         get
         {
-            if (instance == null)
-            {
-                instance = new T();
-            }
             return instance;
         }
     }
-}
 
+    protected virtual void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this as Class;
+        }
+    }
+}
 
 /// <summary>
 /// Singleton mono alway exist through all screnes. 

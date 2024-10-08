@@ -4,40 +4,43 @@ using UnityEngine;
 using TJ.Scripts;
 using TMPro;
 
-public class CoinsManager : SingletonMono<CoinsManager>
+namespace Assets.TJ.Scripts
 {
-    [SerializeField] TextMeshProUGUI coinTxt;
-
-    private int totalCoins;
-
-    private void Start()
+    public class CoinsManager : Singleton<CoinsManager>
     {
-        UpdateCoinTxt();
-    }
-    public int GetTotalCoins()
-    {
-        return HelperManager.DataPlayer.TotalCoin;
-    }
+        [SerializeField] TextMeshProUGUI coinTxt;
 
-    public void AddCoins(int amount)
-    {
-        int coins = GetTotalCoins();
-        coins += amount;
-        HelperManager.UpdateItemForSkill(TYPE_ITEM.COIN, coins);
-        UpdateCoinTxt();
-    }
-    public void DeductCoins(int amount)
-    {
-        int coins = GetTotalCoins();
-        coins -= amount;
+        private int totalCoins;
 
-        HelperManager.UpdateItemForSkill(TYPE_ITEM.COIN, coins);
+        private void Start()
+        {
+            UpdateCoinTxt();
+        }
+        public int GetTotalCoins()
+        {
+            return HelperManager.DataPlayer.TotalCoin;
+        }
 
-        UpdateCoinTxt();
-    }
-    public void UpdateCoinTxt()
-    {
-        totalCoins = GetTotalCoins();
-        coinTxt.text = totalCoins.ToString();
+        public void AddCoins(int amount)
+        {
+            int coins = GetTotalCoins();
+            coins += amount;
+            HelperManager.UpdateItemForSkill(TYPE_ITEM.COIN, coins);
+            UpdateCoinTxt();
+        }
+        public void DeductCoins(int amount)
+        {
+            int coins = GetTotalCoins();
+            coins -= amount;
+
+            HelperManager.UpdateItemForSkill(TYPE_ITEM.COIN, coins);
+
+            UpdateCoinTxt();
+        }
+        public void UpdateCoinTxt()
+        {
+            totalCoins = GetTotalCoins();
+            coinTxt.text = totalCoins.ToString();
+        }
     }
 }
