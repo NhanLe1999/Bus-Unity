@@ -33,7 +33,7 @@ public class LoadDataGame : Singleton<LoadDataGame>
         {
             var obj = Instantiate(PefabGarageObstacle, parent);
             obj.transform.position = turn.position;
-            obj.transform.rotation = turn.rotation;
+            obj.transform.rotation = turn.rotation * Quaternion.Euler(0, 180, 0);
 
             var ga = obj.GetComponent<Garage>();
             ga.tunnelDataPack = turn;
@@ -45,8 +45,8 @@ public class LoadDataGame : Singleton<LoadDataGame>
                 var objIn = Instantiate(objBus, parent);
                 objIn.transform.parent = parent;
                 objIn.SetActive(false);
-                objIn.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
-                objIn.transform.rotation = obj.transform.rotation;
+                objIn.transform.position = obj.transform.position;
+                objIn.transform.rotation = obj.transform.rotation * Quaternion.Euler(0, 180, 0);
 
                 var cpn = objIn.GetComponent<Vehicle>();
                 ga.vehicles.Add(cpn);
@@ -100,8 +100,10 @@ public class LoadDataGame : Singleton<LoadDataGame>
 
         if(HelperManager.DataPlayer.NumLevel == 1)
         {
+            IsPause = true;
             objHelp.gameObject.SetActive(true);
         }
+
     }
 
     BusLevelSO GetLevel()
@@ -136,6 +138,17 @@ public class LoadDataGame : Singleton<LoadDataGame>
             default:
                 return null;
         }
+    }
+
+    public void ResetStateGame()
+    {
+        this.StartCoroutine(ResetPause());
+    }    
+
+    IEnumerator ResetPause()
+    {
+        yield return new WaitForSeconds(0.25f);
+        IsPause = false;
     }
 
     private void OnDestroy()

@@ -42,6 +42,8 @@ public class Vehicle : MonoBehaviour
 
     public BusPosData busPosData;
 
+    public bool IsRun = false;
+
     Collider ColliderBus = null;
 
 
@@ -65,6 +67,7 @@ public class Vehicle : MonoBehaviour
 
     private void Awake()
     {
+        IsRun = true;
         isContinue = true;
         isDown = true;
         ColliderBus = GetComponent<Collider>();
@@ -102,7 +105,7 @@ public class Vehicle : MonoBehaviour
     public void OnMouse()
     {
 
-        if (isMovingStraight /*|| GameManager.instance.gameOver || EventSystem.current.IsPointerOverGameObject()*/)
+        if (isMovingStraight || !IsRun /*|| GameManager.instance.gameOver || EventSystem.current.IsPointerOverGameObject()*/)
         {
             return;
         }
@@ -161,7 +164,7 @@ public class Vehicle : MonoBehaviour
 
     private void OnMouseDown()
     {
-        OnMouse();
+       // OnMouse();
         //transform.GetChild(0).DOShakeScale(0.3f, new Vector3(0, 0, 0.2f), 1, 1);
         //Debug.Log("UpdateSeatCount : " + UpdateSeatCountNo());
     }

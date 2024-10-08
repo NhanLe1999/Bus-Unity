@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using TMPro;
@@ -9,8 +10,8 @@ public class Helper : MonoBehaviour
 {
     public static Helper instance;
 
-    public Transform[] points;
-    public BoxCollider[] vehicleColliders;
+    public List<Transform> points;
+    public List<Vehicle> vehicles;
 
     public GameObject handIcon;
     public TextMeshPro info;
@@ -21,6 +22,8 @@ public class Helper : MonoBehaviour
     public Vector3 pointAdd = Vector3.zero;
 
     private int count = 0;
+
+    int Seatcount = 0;
 
 
     private void Awake()
@@ -38,8 +41,10 @@ public class Helper : MonoBehaviour
         for (int i = 0; i < LoadDataGame.Instance.vehicleController.vehicles.Length; i++)
         {
             var vec = LoadDataGame.Instance.vehicleController.vehicles[i];
-            points[i] = vec.transform;
-            vehicleColliders[i] = vec.GetComponent<BoxCollider>();
+
+            points.Add(vec.transform);
+            vehicles.Add(vec.GetComponent<Vehicle>());
+            vehicles[i].IsRun = false;
         }
 
         onInit();
@@ -48,29 +53,31 @@ public class Helper : MonoBehaviour
 
     private void onInit()
     {
-        if (points.Length > 0)
+        if (points.Count > 0)
             handIcon.transform.DOMove(points[0].position + pointAdd, 0.5f);
-        if (vehicleColliders.Length > 0)
-            vehicleColliders[0].enabled = true;
+        if (vehicles.Count > 0)
+        {
+            Seatcount = vehicles[0].SeatCount;
+            vehicles[0].IsRun = true;
+        }
     }
 
     public void MoveHand()
     {
         count++;
-        if (count < points.Length && count < vehicleColliders.Length)
+        if (count < points.Count && count < vehicles.Count)
         {
             handIcon.transform.DOMove(points[count].position + pointAdd, 0.5f);
-            vehicleColliders[count].enabled = true;
+            vehicles[count].IsRun = true;
+            Seatcount = vehicles[count].SeatCount;
         }
         else
         {
             handIcon.SetActive(false);
         }
 
-        var vech = vehicleColliders[count].GetComponent<Vehicle>();
-        var set = vech.SeatCount;
 
-        info.text = set switch
+        info.text = Seatcount switch
         {
             4 => carTXT,
             10 => busTXT,
