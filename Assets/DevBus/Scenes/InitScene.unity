@@ -123,6 +123,68 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &51499965
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 51499966}
+  - component: {fileID: 51499967}
+  m_Layer: 0
+  m_Name: AdsIronsouceInit
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &51499966
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 51499965}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.5, y: 0, z: -12.9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &51499967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 51499965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48a714779a36c43e38bad6f157e08f61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnableGdprConsentMessage: 1
+  AndroidAppKey: 85460dcd
+  IOSAppKey: 8545d445
+  IsEnableIdTest: 0
+  AndroidAppKeyTest: 85460dcd
+  IOSAppKeyTest: 8545d445
+  ShowBannerAdsInStart: 1
+  ChooseBannerPosition: 2
+  ChooseBannerSize: 0
+  EnableTimedInterstitalAds: 1
+  InterstitialAdIntervalSeconds: 10
+  ResetInterstitalAdTimerOnRewardedAd: 1
+  CanShowAdsNow: 0
+  Timer: 0
+  IsBannerStartShowing: 0
+  IsAdsInitializationCompleted: 0
+  isLoadReward: 0
+  isShowInterstitia: 0
 --- !u!1 &262638663
 GameObject:
   m_ObjectHideFlags: 0

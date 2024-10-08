@@ -26,6 +26,8 @@ public static class ScStatic
     public static string STATE_LOGIN_CLAIM = "claim";
 
 
+    public static bool IsUseAdsOpenApp = false;
+
 
 
     public static string KEY_DAILY_BOUNUS_IS_CLAIM
