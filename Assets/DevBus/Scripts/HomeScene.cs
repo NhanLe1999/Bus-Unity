@@ -12,6 +12,10 @@ public class HomeScene : SingletonMono<HomeScene>
     [SerializeField] RectTransform rectBtnPlay = null;
     [SerializeField] GameObject objSetting = null;
     [SerializeField] TextMeshProUGUI txtLevel = null;
+    [SerializeField] Canvas canvas = null;
+    [SerializeField] GameObject objTop = null;
+    [SerializeField] List<RectTransform> rectPanal = null;
+
 
     public GameObject objCoin = null;
 
@@ -42,8 +46,26 @@ public class HomeScene : SingletonMono<HomeScene>
             HelperManager.DataPlayer.stateLogin = ScStatic.STATE_LOGIN_NEW;
         }
         this.StartCoroutine(OnRunAnimButtonPlay());
+        ResizeTop();
     }
 
+    void ResizeTop()
+    {
+        var sizeCanvas = HelperManager.GetSizeOfCanvas(canvas);
+        var rect = objTop.GetComponent<RectTransform>();
+        var sizeTop = rect.sizeDelta;
+
+       // if(sizeCanvas.x < sizeTop.x)
+        {
+            var scale = sizeCanvas.x / sizeTop.x;
+
+            foreach(var it in rectPanal)
+            {
+                it.localScale = Vector3.one * scale;
+            }
+        }
+
+    }
 
     private void OnDestroy()
     {
