@@ -53,19 +53,4 @@ public class BusLevelSO : ScriptableObject
     public void SaveLevel()
     {
     }
-
-    private List<int> ConvertToIndexList(List<Bus> busList, List<Bus> nodeList)
-    {
-        return null;
-    }
-
-    private List<Bus> ConvertToBusList(List<Bus> busList, List<int> indexList)
-    {
-        return null;
-    }
-
-    public List<AnchorPoint> GetAnchorPoints()
-    {
-        return null;
-    }
 }
