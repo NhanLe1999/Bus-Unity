@@ -279,7 +279,6 @@ public class Vehicle : MonoBehaviour
 
         Debug.DrawLine(transform.position, worldPoint, Color.green);
         movingZdir = transform.DOMove(worldPoint, speedMove).SetSpeedBased();
-        // GetComponent<AudioSource>().enabled = true;
     }
     public bool CheckForObstacles()
     {
@@ -397,7 +396,6 @@ public class Vehicle : MonoBehaviour
                 {
                     counter++;
                     Debug.Log("playing straight");
-                    GetComponent<AudioSource>().enabled = false;
                     Audio.Play(ScStatic.SFX_HIT_SOUND);
                     EffectsManager.instance.PlayEffect(EffectsManager.instance.hitEffect,
                         other.ClosestPoint(transform.position + new Vector3(0, 0.25f, 0)), Quaternion.identity);
@@ -650,6 +648,5 @@ public class Vehicle : MonoBehaviour
         Debug.Log("Moved to slot");
         if (!PlayerManager.instance.isColormatched)
             EventManager.OnNewVehArrived?.Invoke();
-        GetComponent<AudioSource>().enabled = false;
     }
 }
