@@ -4180,9 +4180,8 @@ MonoBehaviour:
   m_text: <color=red><u>Cars</u></color> can occupy maximum <color=red><u>4</u></color>
     people.
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 316b968391fd15747aaa8af9f9f99d1e, type: 2}
-  m_sharedMaterial: {fileID: -1380255273577064455, guid: 316b968391fd15747aaa8af9f9f99d1e,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a458da4eb47590f40b47e6cca0138511, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 9ff47a8a17f00cb46a35e82d80ca4ca2, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4206,7 +4205,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 13.25
+  m_fontSize: 11.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4271,7 +4270,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -1380255273577064455, guid: 316b968391fd15747aaa8af9f9f99d1e, type: 2}
+  - {fileID: 2100000, guid: 9ff47a8a17f00cb46a35e82d80ca4ca2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4302,8 +4301,8 @@ RectTransform:
   m_GameObject: {fileID: 737649902}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: -7.48}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 480063885}
   m_RootOrder: 5
