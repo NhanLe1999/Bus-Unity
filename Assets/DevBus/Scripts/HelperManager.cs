@@ -104,6 +104,18 @@ public static class HelperManager
         }
     }
 
+    public static int GetNumUseItemOfSkill(TYPE_ITEM type)
+    {
+        foreach (var data in DataPlayer.DataNumSkillGame)
+        {
+            if (data.typeSkill.Equals(type))
+            {
+                return data.numCountUse;
+            }
+        }
+        return 0;
+    }
+
     #region LOAD_SCENE
     public static void OnLoadScene(string scene, LoadSceneMode mode = LoadSceneMode.Single)
     {

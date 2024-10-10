@@ -26,10 +26,7 @@ public class CoinsManager : SingletonMono<CoinsManager>
     }
     public void DeductCoins(int amount)
     {
-        int coins = GetTotalCoins();
-        coins -= amount;
-
-        HelperManager.UpdateItemForSkill(TYPE_ITEM.COIN, coins);
+        HelperManager.UpdateItemForSkill(TYPE_ITEM.COIN, -amount);
 
         UpdateCoinTxt();
     }

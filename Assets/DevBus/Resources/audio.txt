@@ -2,7 +2,11 @@
 <AudioSerialization xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <files>
     <AudioFile>
-      <fileName>Music_Game</fileName>
+      <fileName>Game</fileName>
+      <fullPath>Music/</fullPath>
+    </AudioFile>
+    <AudioFile>
+      <fileName>Home</fileName>
       <fullPath>Music/</fullPath>
     </AudioFile>
 
@@ -40,6 +44,10 @@
     </AudioFile>
     <AudioFile>
       <fileName>SFX_NOCOIN_SOUND</fileName>
+      <fullPath>Sounds/</fullPath>
+    </AudioFile>
+      <AudioFile>
+      <fileName>SFX_WARING</fileName>
       <fullPath>Sounds/</fullPath>
     </AudioFile>
   </files>

@@ -52,23 +52,34 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
-    public bool ChekIfSlotFull()
+    public bool ChekIfSlotFull(bool isShow)
     {
         var vehicles = ParkingManager.instance.parkedVehicles;
         if (vehicles.Count == ParkingManager.instance.slots.Count - 1)
         {
+            if(isShow)
+            {
+                UiManager.instance.ShowPoupNoti("One Space Left!");
+            }
             Debug.Log("<color=yellow>Warning: Only One Slot Left</color>");
         }
 
         if (vehicles.Count == ParkingManager.instance.slots.Count)
+        {
+            if(isShow)
+            {
+                UiManager.instance.ShowPoupNoti("Out Of Slot!");
+            }
             return true;
+
+        }
         return false;
     }
 
     public IEnumerator CheckIfGameOver()
     {
         yield return new WaitForSeconds(3f);
-        if (ChekIfSlotFull() && IfSameColorVehicleParked() == false)
+        if (ChekIfSlotFull(false) && IfSameColorVehicleParked() == false)
         {
             gameOver = true;
             Audio.Play(ScStatic.SFX_FAIL_SOUND);
@@ -89,6 +100,7 @@ public class GameManager : MonoBehaviour
         {
             alreaduCalled = true;
 
+            HelperManager.DataPlayer.numWinLevel += 1;
 
             DOVirtual.DelayedCall(1.5f,
                 () => {

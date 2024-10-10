@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using System.Reflection;
-using UnityEditor.VersionControl;
 using Cysharp.Threading.Tasks;
 
 
@@ -20,11 +19,15 @@ namespace MobileMonetizationPro
         {
             public Button RewardedButton;
             public CallbackAds callbackAds;
+            public GameObject objNotButton;
         }
 
         private List<Button> ActionButtonsToInvokeInterstitalAds  = new();
 
         private List<Button> rewardedButtons = new List<Button>();
+
+        private List<GameObject> rewardedGameObject = new ();
+
 
         public List<FunctionInfo> functions = new List<FunctionInfo>();
 
@@ -42,10 +45,28 @@ namespace MobileMonetizationPro
         {
             foreach (var functionInfo in functions)
             {
+                if(functionInfo.RewardedButton == null)
+                {
+                    continue;
+                }
                 rewardedButtons.Add(functionInfo.RewardedButton);
             }
             return rewardedButtons;
         }
+
+        public List<GameObject> GetRewardedGameObject()
+        {
+            foreach (var functionInfo in functions)
+            {
+                if(functionInfo.objNotButton == null)
+                {
+                    continue;
+                }
+                rewardedGameObject.Add(functionInfo.objNotButton);
+            }
+            return rewardedGameObject;
+        }
+
         public void OnButtonClick()
         {
             if (functionInfo != null)
@@ -95,18 +116,20 @@ namespace MobileMonetizationPro
 
             List<Button> rewardedButtons = GetRewardedButtons();
 
-            // Now you can work with the `rewardedButtons` list
             foreach (Button rewardedButton in rewardedButtons)
             {
-                // Do something with each rewarded button
-                // For example, you can add a click listener
                 if(rewardedButton != null)
                 {
-                    rewardedButton.onClick.AddListener(() => ShowRewarded(rewardedButton));
+                    rewardedButton.onClick.AddListener(() => ShowRewarded(rewardedButton, null));
                 }
-              
             }
         }
+
+        public void EnableBtnShowAds()
+        {
+
+        }
+
         private void OnEnable()
         {
             if (PlayerPrefs.GetInt("AdsRemoved") == 0)
@@ -253,28 +276,26 @@ namespace MobileMonetizationPro
         {
         }
 
-        public void ShowRewarded(Button clickedButton)
+        public void ShowRewarded(Button clickedButton, GameObject objNotButton)
         {
             if (PlayerPrefs.GetInt("AdsRemoved", 0) == 1)
             {
-                functionInfo = functions.Find(info => info.RewardedButton == clickedButton);
+                GetFunctionInfor(clickedButton, objNotButton);
                 OnButtonClick();
                 return;
             }
 
-           
-
 #if UNITY_EDITOR
-            functionInfo = functions.Find(info => info.RewardedButton == clickedButton);
+            GetFunctionInfor(clickedButton, objNotButton);
             OnButtonClick();
             return;
 #endif
 
-            /*if (!CheckNetwork.Instance.IsConnect)
+            if (!CheckNetwork.Instance.IsConnect)
             {
                 UINoNetworkCanvas.Show();
                 return;
-            }*/
+            }
 
             ScStatic.IsUseAdsOpenApp = false;
 
@@ -282,16 +303,27 @@ namespace MobileMonetizationPro
             {
                 if (IronSource.Agent.isRewardedVideoAvailable())
                 {
-                    Debug.Log("ads_neee_sucess");
-                    functionInfo = functions.Find(info => info.RewardedButton == clickedButton);
+                    GetFunctionInfor(clickedButton, objNotButton);
                     MobileMonetizationPro_LevelPlayInitializer.instance.isLoadReward = true;
                     IronSource.Agent.showRewardedVideo();
                 }
                 else
                 {
-                    Debug.Log("ads_neee_errrorrrr");
                     MobileMonetizationPro_LevelPlayInitializer.instance.LoadRewarded();
                 }
+            }
+        }
+
+        private void GetFunctionInfor(Button clickedButton, GameObject objNotButton)
+        {
+            if (clickedButton != null)
+            {
+                functionInfo = functions.Find(info => info.RewardedButton == clickedButton);
+            }
+
+            if (objNotButton != null)
+            {
+                functionInfo = functions.Find(info => info.objNotButton == objNotButton);
             }
         }
 

@@ -2,44 +2,43 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-namespace TJ.Scripts
+public class ParkingManager : MonoBehaviour
 {
-    public class ParkingManager : MonoBehaviour
+    public static ParkingManager instance;
+    public List<ParkingSlots> slots;
+    public List<Vehicle> parkedVehicles;
+    public Sprite sprVip = null;
+    public Sprite sprSlotCurrent = null;
+
+
+    public Transform exitPoint;
+
+    // Start is called before the first frame update
+    private void Awake()
     {
-        public static ParkingManager instance;
-        public List<ParkingSlots> slots;
-        public List<Vehicle> parkedVehicles;
-        
+        instance = this;
+    }
 
-        public Transform exitPoint;
+    void Start()
+    {
+        //slots = FindObjectsOfType<ParkingSlots>().ToList();
+    }
 
-        // Start is called before the first frame update
-        private void Awake()
-        {
-            instance = this;
-        }
+    public ParkingSlots CheckForFreeSlot()
+    {
 
-        void Start()
+        for (int i = 0; i < slots.Count; i++)
         {
-            //slots = FindObjectsOfType<ParkingSlots>().ToList();
-        }
-        
-        public ParkingSlots CheckForFreeSlot()
-        {
-        
-            for (int i = 0; i < slots.Count; i++)
+            if (!slots[i].isOccupied)
             {
-                if (!slots[i].isOccupied)
-                {
-                    return slots[i];
-                }
+                return slots[i];
             }
-            return null;
         }
+        return null;
+    }
 
-        private void Update()
-        {
-            
-        }
+    private void Update()
+    {
+
     }
 }

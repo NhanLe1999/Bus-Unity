@@ -57,6 +57,11 @@ public class UILuckyWheelCanvas : Dialog<UILuckyWheelCanvas>
     [SerializeField] List<Sprite> spritesItem = null;
     [SerializeField] RectTransform rectTrAnim = null;
     [SerializeField] TextMeshProUGUI txtAddItem = null;
+    [SerializeField] Image imgSlideBar = null;
+    [SerializeField] TextMeshProUGUI txtWinLuckyWheel = null;
+    [SerializeField] TextMeshProUGUI txtDesWinLuckyWheel = null;
+
+
 
     Vector3 pointBegin = Vector3.zero;
     CanvasGroup canvasGroup = null;
@@ -66,6 +71,21 @@ public class UILuckyWheelCanvas : Dialog<UILuckyWheelCanvas>
     private int index = 0;
     void Start()
     {
+        txtDesWinLuckyWheel.text = $"Win {ScStatic.numTotalWinToLuckyWheel} levels to spin the wheel";
+
+        if (HelperManager.DataPlayer.numWinLevel >= ScStatic.numTotalWinToLuckyWheel)
+        {
+            HelperManager.DataPlayer.NumTotalSpin++;
+            HelperManager.DataPlayer.numWinLevel = HelperManager.DataPlayer.numWinLevel - ScStatic.numTotalWinToLuckyWheel;
+            HelperManager.DataPlayer.isWin5Level = true;
+            txtDesWinLuckyWheel.text = $"Win {ScStatic.numTotalWinToLuckyWheel} levels to spin the wheel";
+        }
+
+        txtWinLuckyWheel.text = $"{HelperManager.DataPlayer.numWinLevel}/{ScStatic.numTotalWinToLuckyWheel}";
+        imgSlideBar.fillAmount =(float) HelperManager.DataPlayer.numWinLevel / (float)ScStatic.numTotalWinToLuckyWheel;
+
+        HomeScene.Instance.txtWinLuckyWheel.text = $"{HelperManager.DataPlayer.numWinLevel}/{ScStatic.numTotalWinToLuckyWheel}";
+
         HomeScene.Instance.objCoin.transform.parent = transform;
         anglePerItem = 360f / itemCount;
         CreateWheelItems();

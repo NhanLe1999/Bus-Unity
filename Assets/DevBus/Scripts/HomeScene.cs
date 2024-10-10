@@ -15,12 +15,16 @@ public class HomeScene : SingletonMono<HomeScene>
     [SerializeField] Canvas canvas = null;
     [SerializeField] GameObject objTop = null;
     [SerializeField] List<RectTransform> rectPanal = null;
-
+    public TextMeshProUGUI txtWinLuckyWheel = null;
 
     public GameObject objCoin = null;
 
     void Start()
     {
+        Audio.PlayBackgroundMusic(ScStatic.MUSIC_HOME, 0.5f);
+
+        txtWinLuckyWheel.text = $"{HelperManager.DataPlayer.numWinLevel}/{ScStatic.numTotalWinToLuckyWheel}";
+
         txtLevel.text = "Level " + HelperManager.DataPlayer.NumLevel.ToString();
 
         if (PlayerPrefs.HasKey("CurrentDay_Login"))

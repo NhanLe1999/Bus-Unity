@@ -1,3 +1,4 @@
+using _Game.Scripts.Bus;
 using System.Collections;
 using System.Collections.Generic;
 using TJ.Scripts;
@@ -20,13 +21,17 @@ public class LoadDataGame : SingletonMono<LoadDataGame>
 
     public bool IsPause = false;
     [SerializeField] Vector3 pointAdd = Vector3.zero;
+    [SerializeField] GameObject objWarning = null;
 
 
     // Start is called before the first frame update
     void Start()
     {
 
+        Audio.PlayBackgroundMusic(ScStatic.MUSIC_GAME, 0.2f);
+
         levelSO = GetLevel();
+       // levelSO.ShufferData();
 
         List<Garage> garages = new();
 
@@ -105,6 +110,30 @@ public class LoadDataGame : SingletonMono<LoadDataGame>
             objHelp.gameObject.SetActive(true);
         }
 
+        string txtHard = "";
+
+        if(levelSO.busMapHardness.Equals(BusMapHardness.Hard))
+        {
+            txtHard = "Hard Level!";
+        }
+
+        if (levelSO.busMapHardness.Equals(BusMapHardness.SuperHard))
+        {
+            txtHard = "Super Hard Level!";
+        }
+
+        if(!string.IsNullOrEmpty(txtHard))
+        {
+            Audio.Play(ScStatic.SFX_WARING);
+            IsPause = true;
+            objWarning.SetActive(true);
+        }
+    }
+
+    public void SetState()
+    {
+        IsPause = false;
+        IsPause = false;
     }
 
     BusLevelSO GetLevel()

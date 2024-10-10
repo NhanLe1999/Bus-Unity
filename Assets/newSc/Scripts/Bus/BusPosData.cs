@@ -1,24 +1,25 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
-namespace _Game.Scripts.Bus
+[Serializable]
+public struct BusPosData
 {
-	[Serializable]
-	public struct BusPosData
-	{
-		public JunkColor color;
+    public JunkColor color;
 
-		public BusType type;
+    public BusType type;
 
-		public Vector3 position;
+    public Vector3 position;
 
-		public Quaternion rotation;
+    public Quaternion rotation;
 
-		public List<int> nodeIndexList;
+    public List<int> nodeIndexList;
 
-		public List<int> backTrackList;
+    public List<int> backTrackList;
 
-		public int weight;
-	}
+    public int weight;
+
+    public void setColor(JunkColor co)
+    {
+        this.color = co;
+    }
 }

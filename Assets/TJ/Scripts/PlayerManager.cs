@@ -198,6 +198,7 @@ public class PlayerManager : SingletonMono<PlayerManager>
             return;
         }
 
+
         foreach (var car in cars)
         {
             if (activePlayerList.Count > 0 && activePlayerList[0].color == car.vehicleColor && !car.isFull)
@@ -551,7 +552,7 @@ public class PlayerManager : SingletonMono<PlayerManager>
                     var slot = hit.transform.GetComponent<ParkingSlots>();
                     if (slot != null)
                     {
-                        slot.OnMouseClick();
+                        slot.ShowAds();
                         return;
                     }
 

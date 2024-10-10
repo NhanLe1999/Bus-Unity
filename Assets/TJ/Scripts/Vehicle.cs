@@ -147,7 +147,10 @@ public class Vehicle : MonoBehaviour
             return;
         }
 
+        Audio.Play(ScStatic.SFX_MOVING_SOUND);
+
         MoveCarStraight();
+
     }
 
     void OnGaraNextBus()
@@ -201,14 +204,18 @@ public class Vehicle : MonoBehaviour
     {
         if (playersInSeat == seats.Count)
         {
+            Debug.Log(Time.timeScale);
             isFull = true;
-            DOVirtual.DelayedCall(1f, () =>
-            {
-                VehicleGoing();
-                GameManager.instance.CheckGameWin();
-            });
+            this.StartCoroutine(DelayCheckWin());
         }
     }
+
+    IEnumerator DelayCheckWin()
+    {
+        yield return new WaitForSeconds(1.0f);
+        VehicleGoing();
+        GameManager.instance.CheckGameWin();
+    }    
 
     public void VehicleGoing()
     {
@@ -231,12 +238,13 @@ public class Vehicle : MonoBehaviour
                 });
             });
 
-        Audio.Play(ScStatic.SFX_FULL_SOUND);
-        SoundController.Instance.PlayOneShot(SoundController.Instance.moving);
+        Audio.Play(ScStatic.SFX_FULL_SOUND, 1.0f, false, true);
     }
 
     public void ChangeColor(JunkColor colorEnum)
     {
+        Audio.Play(ScStatic.SFX_HIT_SOUND);
+        ShakeVehicle();
         this.vehicleColor = colorEnum;
         Material mats = VehicleController.instance.VehiclesMaterialHolder.FindMaterialByName(colorEnum);
         if (mats != null)
@@ -590,6 +598,8 @@ public class Vehicle : MonoBehaviour
             return;
         }
 
+        slot.LoadSprSkillVip(true);
+
         objsMoke.SetActive(false);
 
         slot.isOccupied = true;
@@ -621,6 +631,7 @@ public class Vehicle : MonoBehaviour
 
                     transform.DORotateQuaternion(newRota, dorotate).OnComplete(() =>
                     {
+                        slot.LoadSprSkillVip(false);
                         OnEndMoveBus();
                         OnEndBus();
                     });
@@ -631,6 +642,7 @@ public class Vehicle : MonoBehaviour
 
     void OnEndBus()
     {
+        GameManager.instance.ChekIfSlotFull(true);
         isMovingStraight = false;
         ParkingManager.instance.parkedVehicles.Add(this);
         transform.parent = slot.transform;

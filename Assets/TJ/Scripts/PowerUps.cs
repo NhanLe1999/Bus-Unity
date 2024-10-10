@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[Serializable]
+struct DataTextOfSkill
+{
+    public TYPE_ITEM type;
+    public TextMeshProUGUI txtSkill;
+}
+
 public class PowerUps : MonoBehaviour
 {
     public static PowerUps instance = null;
@@ -14,13 +22,17 @@ public class PowerUps : MonoBehaviour
     public int shuffleCarCost;
     public int sortPlayerCost;
     public int VipPlayerCost;
+    public int MoreSlot;
 
     [SerializeField] TextMeshProUGUI title;
     [SerializeField] TextMeshProUGUI info;
+    [SerializeField] TextMeshProUGUI txtCoin;
     [SerializeField] Image icon;
     [SerializeField] Sprite carShuffleSprite;
     [SerializeField] Sprite playerSortSprite;
     [SerializeField] Sprite vipVehicleSprite;
+    [SerializeField] Sprite SlotSprite;
+
     [SerializeField] GameObject panel;
     [SerializeField] GameObject background;
     [SerializeField] Button panelCloseButton;
@@ -31,37 +43,70 @@ public class PowerUps : MonoBehaviour
     public Button btn_VipPlayers;
 
     public GameObject notEnoughCoinsPopup;
+    [SerializeField] List<DataTextOfSkill> dataTextOfSkills;
 
     private bool isPanelClosed = false;
     private bool isInfoPlaying = false;
     public bool isUseSkillVip = false;
 
+    Action currentCallback = null;
+
     private void Start()
     {
         instance = this;
         InitializeUI();
+        OnEndSkkillGame(TYPE_ITEM.CHANG_CAR, false);
+        OnEndSkkillGame(TYPE_ITEM.CHANGE_PLAYER, false);
+        OnEndSkkillGame(TYPE_ITEM.VIP, false);
+
 
         btn_ShuffleVehicles.onClick.AddListener(() =>
         {
-            LoadDataGame.Instance.IsPause = true;
-            ShowCarShufflePanel();
-            Audio.Play(ScStatic.SFX_BUTTONSOUND);
-            Vibration.Vibrate(30);
+            if(HelperManager.GetNumUseItemOfSkill(TYPE_ITEM.CHANG_CAR) > 0)
+            {
+                OnSkillChangeCar();
+                OnEndSkkillGame(TYPE_ITEM.CHANG_CAR, true);
+            }
+            else
+            {
+                LoadDataGame.Instance.IsPause = true;
+                ShowCarShufflePanel();
+                Audio.Play(ScStatic.SFX_BUTTONSOUND);
+                Vibration.Vibrate(30);
+            }
+           
         });
         btn_ShufflePlayers.onClick.AddListener(() =>
         {
-            LoadDataGame.Instance.IsPause = true;
-            ShowPlayerSortPanel();
-            Audio.Play(ScStatic.SFX_BUTTONSOUND);
-            Vibration.Vibrate(30);
+            if (HelperManager.GetNumUseItemOfSkill(TYPE_ITEM.CHANGE_PLAYER) > 0)
+            {
+                OnSkillChangePlayer();
+                OnEndSkkillGame(TYPE_ITEM.CHANGE_PLAYER, true);
+            }
+            else
+            {
+                LoadDataGame.Instance.IsPause = true;
+                ShowPlayerSortPanel();
+                Audio.Play(ScStatic.SFX_BUTTONSOUND);
+                Vibration.Vibrate(30);
+            }
         });
 
         btn_VipPlayers.onClick.AddListener(() =>
         {
-            LoadDataGame.Instance.IsPause = true;
-            ShowPoupSkillVip();
-            Audio.Play(ScStatic.SFX_BUTTONSOUND);
-            Vibration.Vibrate(30);
+            if (HelperManager.GetNumUseItemOfSkill(TYPE_ITEM.VIP) > 0)
+            {
+                OnSkillChangeVip();
+                OnEndSkkillGame(TYPE_ITEM.VIP, true);
+            }
+            else
+            {
+                LoadDataGame.Instance.IsPause = true;
+                ShowPoupSkillVip();
+                Audio.Play(ScStatic.SFX_BUTTONSOUND);
+                Vibration.Vibrate(30);
+            }
+           
         });
         panelCloseButton.onClick.AddListener(() =>
         {
@@ -71,10 +116,45 @@ public class PowerUps : MonoBehaviour
         });
     }
 
+    public void ShowPoupRemoveSlot(ParkingSlots parkingSlot)
+    {
+        LoadDataGame.Instance.IsPause = true;
+
+        Audio.Play(ScStatic.SFX_BUTTONSOUND);
+        txtCoin.text = MoreSlot.ToString();
+        useWithCoinsButton.interactable = HelperManager.DataPlayer.TotalCoin >= MoreSlot;
+        SetPowerUpPanel(PowerUp.Slot, "More Slot", "Unlock a parking place", SlotSprite);
+        useWithCoinsButton.onClick.AddListener(() => UsePowerUpWithCoins(MoreSlot, () => {
+            LoadDataGame.Instance.IsPause = false;
+            OnSlotSucess();
+            parkingSlot.OnAdsSucess();
+        }));
+
+        currentCallback = () => {
+            LoadDataGame.Instance.IsPause = false;
+            OnSlotSucess();
+            parkingSlot.OnAdsSucess();
+        };
+    }    
+
+    private void OnSlotSucess()
+    {
+        this.StartCoroutine(onEnablePause());
+        ClosePanel();
+        Vibration.Vibrate(30);
+
+    }
+
     public void OnSkillTrain()
     {
         isUseSkillVip = true;
     }
+
+    public void OnCallbackSucess()
+    {
+        currentCallback?.Invoke();
+        currentCallback = null;
+    }    
 
     private void InitializeUI()
     {
@@ -86,54 +166,74 @@ public class PowerUps : MonoBehaviour
 
     private void ShowPoupSkillVip()
     {
-        SetPowerUpPanel(PowerUp.Vip, "Vip", "Rearrange the <color=green>COLOR</color> of the Vehicles in the parking lot", vipVehicleSprite);
-        useWithCoinsButton.onClick.AddListener(() => UsePowerUpWithCoins(VipPlayerCost, OnSkillTrain));
-        useWithAdsButton.onClick.AddListener(() =>
-        {
-            //call the ads here
+        txtCoin.text = VipPlayerCost.ToString();
 
-            // call below lines after the ad
-            this.StartCoroutine(onEnablePause());
-            ClosePanel();
-            OnSkillTrain();
-            Audio.Play(ScStatic.SFX_BUTTONSOUND);
-            Vibration.Vibrate(30);
-        });
+        useWithCoinsButton.interactable = HelperManager.DataPlayer.TotalCoin >= VipPlayerCost;
+        SetPowerUpPanel(PowerUp.Vip, "Vip", "Choose <color=green>any car</color> to move to  <color=green>VIP</color> parking space", vipVehicleSprite);
+        useWithCoinsButton.onClick.AddListener(() => UsePowerUpWithCoins(VipPlayerCost, OnSkillChangeVip));
+
+        currentCallback = () => {
+            OnSkillChangeVip();
+        };
+       
     }
+
+    private void OnSkillChangeVip()
+    {
+        this.StartCoroutine(onEnablePause());
+        ClosePanel();
+        OnSkillTrain();
+        Audio.Play(ScStatic.SFX_BUTTONSOUND);
+        Vibration.Vibrate(30);
+    }
+
 
     private void ShowCarShufflePanel()
     {
-        SetPowerUpPanel(PowerUp.ShuffleCar, "Shuffle", "Rearrange the <color=green>COLOR</color> of the Vehicles in the parking lot", carShuffleSprite);
-        useWithCoinsButton.onClick.AddListener(() => UsePowerUpWithCoins(shuffleCarCost, VehicleController.instance.RandomVehicleColors));
-        useWithAdsButton.onClick.AddListener(() =>
-        {
-            //call the ads here
+        txtCoin.text = shuffleCarCost.ToString();
 
-            // call below lines after the ad
-            this.StartCoroutine(onEnablePause());
-            ClosePanel();
-            VehicleController.instance.RandomVehicleColors();
-            Audio.Play(ScStatic.SFX_BUTTONSOUND);
-            Vibration.Vibrate(30);
-        });
+        useWithCoinsButton.interactable = HelperManager.DataPlayer.TotalCoin >= shuffleCarCost;
+
+        SetPowerUpPanel(PowerUp.ShuffleCar, "Shuffle", "Rearrange the <color=green>COLOR</color> of the Vehicles in the parking lot", carShuffleSprite);
+        useWithCoinsButton.onClick.AddListener(() => UsePowerUpWithCoins(shuffleCarCost, OnSkillChangeCar));
+
+        currentCallback = () => {
+            OnSkillChangeCar();
+        };
+        
+    }
+
+    private void OnSkillChangeCar()
+    {
+        this.StartCoroutine(onEnablePause());
+        ClosePanel();
+        VehicleController.instance.RandomVehicleColors();
+        Audio.Play(ScStatic.SFX_BUTTONSOUND);
+        Vibration.Vibrate(30);
     }
 
     private void ShowPlayerSortPanel()
     {
+        txtCoin.text = sortPlayerCost.ToString();
+        useWithCoinsButton.interactable = HelperManager.DataPlayer.TotalCoin >= sortPlayerCost;
+
         SetPowerUpPanel(PowerUp.SortPlayers, "Sort", "Sort the <color=green>PASSENGERS</color> according to Vehicle Colors", playerSortSprite);
         useWithCoinsButton.onClick.AddListener(() => UsePowerUpWithCoins(sortPlayerCost, ShufflePlayersPowerUp));
-        useWithAdsButton.onClick.AddListener(() =>
-        {
-            //call the ads
 
-            //callback for he powerUp
-            this.StartCoroutine(onEnablePause());
-            ClosePanel();
-            ShufflePlayersPowerUp();
-            Audio.Play(ScStatic.SFX_BUTTONSOUND);
-            Vibration.Vibrate(30);
-        });
+        currentCallback = () => {
+            OnSkillChangePlayer();
+        };
     }
+
+    private void OnSkillChangePlayer()
+    {
+        this.StartCoroutine(onEnablePause());
+        ClosePanel();
+        ShufflePlayersPowerUp();
+        Audio.Play(ScStatic.SFX_BUTTONSOUND);
+        Vibration.Vibrate(30);
+    }
+
 
     private IEnumerator onEnablePause()
     {
@@ -147,6 +247,7 @@ public class PowerUps : MonoBehaviour
         title.text = titleText;
         info.text = infoText;
         icon.sprite = iconSprite;
+        icon.SetNativeSize();
         OpenPanel();
     }
 
@@ -163,7 +264,7 @@ public class PowerUps : MonoBehaviour
     {
         if (isPanelClosed)
             return;
-
+        LoadDataGame.Instance.IsPause = false;
         isPanelClosed = true;
         closeTween?.Kill();
         ResetButtonListeners();
@@ -260,7 +361,23 @@ public class PowerUps : MonoBehaviour
     private void ResetButtonListeners()
     {
         useWithCoinsButton.onClick.RemoveAllListeners();
-        useWithAdsButton.onClick.RemoveAllListeners();
+    }
+
+    public void OnEndSkkillGame(TYPE_ITEM type, bool isAdd)
+    {
+        if(isAdd)
+        {
+            HelperManager.UpdateItemForSkill(type, -1);
+        }
+        foreach (var it in dataTextOfSkills)
+        {
+            if(it.type.Equals(type))
+            {
+                int numItem = HelperManager.GetNumUseItemOfSkill(type);
+                it.txtSkill.text = numItem <= 0 ? "+" : numItem.ToString();
+               
+            }
+        }
     }
 }
 
@@ -269,5 +386,6 @@ public enum PowerUp
     None,
     ShuffleCar,
     SortPlayers,
-    Vip
+    Vip,
+    Slot
 }

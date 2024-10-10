@@ -17,7 +17,6 @@ namespace MobileMonetizationPro
         public string IOSAppKey = "";
 
         [Header("App Key Test's")]
-        public bool IsEnableIdTest = false;
         public string AndroidAppKeyTest = "";
         public string IOSAppKeyTest = "";
 
@@ -69,8 +68,16 @@ namespace MobileMonetizationPro
                 Destroy(gameObject);
             }
         }
+
+        void LoadEventFail(IronSourceError error)
+        {
+            Debug.Log("loadAds_error_" + error.getDescription() + error.GetHashCode());
+        }    
+
         private void OnEnable()
         {
+
+            IronSourceRewardedVideoEvents.onAdLoadFailedEvent += LoadEventFail;
 
             if (EnableGdprConsentMessage == true)
             {
@@ -95,7 +102,7 @@ namespace MobileMonetizationPro
 #else
     string appKey = "unexpected_platform";
 #endif
-            IronSource.Agent.setManualLoadRewardedVideo(true);
+            //IronSource.Agent.setManualLoadRewardedVideo(true);
         }
         void OnConsentInfoUpdated(FormError consentError)
         {
@@ -192,8 +199,7 @@ namespace MobileMonetizationPro
                 {
                     isShowInterstitia = true;
                 }
-                
-                if(!isShowInterstitia)
+                else
                 {
                     IronSource.Agent.loadInterstitial();
                 }
@@ -203,17 +209,12 @@ namespace MobileMonetizationPro
         {
             if (IronSource.Agent.isRewardedVideoAvailable())
             {
-                isLoadReward = true;
-            }
-
-            if (!isLoadReward)
-            {
-                IronSource.Agent.loadRewardedVideo();
-                Debug.Log("ads_hehe_loadw_video_sucess");
+                Debug.Log("ads_hehe_khong_load_nua_video_sucess");
             }
             else
             {
-                Debug.Log("ads_hehe_khong_load_nua_video_sucess");
+                Debug.Log("ads_hehe_loadw_video_sucess");
+                IronSource.Agent.loadRewardedVideo();
             }
         }
 
@@ -242,6 +243,16 @@ namespace MobileMonetizationPro
                     }
                 }
             }
+        }
+
+        void RewardedVideoAdLoadFailed(IronSourceError error)
+        {
+            Debug.Log("Rewarded Video load failed: " + error.getDescription());
+        }
+
+        void RewardedVideoAdReady()
+        {
+
         }
     }
 }

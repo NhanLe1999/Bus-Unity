@@ -17,6 +17,7 @@ public class InitScene : MonoBehaviour
 
     async void LoadData()
     {
+        CheckNetwork.Instance.OnStartCheck();
         while (true)
         {
             if (uILoadingCanvas.CountCurrent < 1.0f)
@@ -25,7 +26,15 @@ public class InitScene : MonoBehaviour
             }
             else
             {
-                HelperManager.OnLoadScene(ScStatic.HOME_SCENE);
+                if (HelperManager.DataPlayer.NumLevel > 5)
+                {
+                    HelperManager.OnLoadScene(ScStatic.HOME_SCENE);
+                }
+                else
+                {
+                    HelperManager.OnLoadScene(ScStatic.GAME_SCENE);
+                }
+
                 break;
             }
         }
