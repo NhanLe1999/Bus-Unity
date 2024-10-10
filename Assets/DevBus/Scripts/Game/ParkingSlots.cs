@@ -11,6 +11,7 @@ public class ParkingSlots : MonoBehaviour
     public Transform stopPoint;
 
     public bool isOccupied;
+    public bool isItemAds = false;
     [SerializeField] private GameObject normal;
     [SerializeField] private GameObject locked;
 
@@ -47,14 +48,13 @@ public class ParkingSlots : MonoBehaviour
 
     public void OnAdsSucess()
     {
-        if (GameManager.instance.gameOver)
-            return;
         var slots = ParkingManager.instance.slots;
         if (!slots.Contains(this))
         {
             slots.Add(this);
             locked?.SetActive(false);
             normal?.SetActive(true);
+            isItemAds = false;
         }
         Debug.Log("Added Slot");
     }

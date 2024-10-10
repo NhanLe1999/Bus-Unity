@@ -241,9 +241,12 @@ public class Vehicle : MonoBehaviour
         Audio.Play(ScStatic.SFX_FULL_SOUND, 1.0f, false, true);
     }
 
-    public void ChangeColor(JunkColor colorEnum)
+    public void ChangeColor(JunkColor colorEnum, bool isPlaySound = true)
     {
-        Audio.Play(ScStatic.SFX_HIT_SOUND);
+        if(isPlaySound)
+        {
+            Audio.Play(ScStatic.SFX_HIT_SOUND);
+        }
         ShakeVehicle();
         this.vehicleColor = colorEnum;
         Material mats = VehicleController.instance.VehiclesMaterialHolder.FindMaterialByName(colorEnum);
@@ -640,7 +643,6 @@ public class Vehicle : MonoBehaviour
 
     void OnEndBus()
     {
-        GameManager.instance.ChekIfSlotFull(true);
         isMovingStraight = false;
         ParkingManager.instance.parkedVehicles.Add(this);
         transform.parent = slot.transform;
@@ -648,5 +650,6 @@ public class Vehicle : MonoBehaviour
         Debug.Log("Moved to slot");
         if (!PlayerManager.instance.isColormatched)
             EventManager.OnNewVehArrived?.Invoke();
+        GameManager.instance.ChekIfSlotFull(true);
     }
 }

@@ -1668,6 +1668,7 @@ MonoBehaviour:
   sortPlayerCost: 100
   VipPlayerCost: 100
   MoreSlot: 125
+  GameOverSlot: 200
   title: {fileID: 2643776783917699156}
   info: {fileID: 7942068158682821331}
   txtCoin: {fileID: 7684716747335086836}
@@ -1677,6 +1678,7 @@ MonoBehaviour:
   vipVehicleSprite: {fileID: -1930578242, guid: ac80a75ed88bdbf4fa7e656f24398d88,
     type: 3}
   SlotSprite: {fileID: 21300000, guid: 03971b36d3b87f04eb6bc03845d848df, type: 3}
+  SprGameOver: {fileID: 21300000, guid: 03971b36d3b87f04eb6bc03845d848df, type: 3}
   panel: {fileID: 6284609532898587949}
   background: {fileID: 921490728792326307}
   panelCloseButton: {fileID: 680289457501432454}

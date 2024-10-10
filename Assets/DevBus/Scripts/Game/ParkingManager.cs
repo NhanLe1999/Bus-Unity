@@ -6,6 +6,7 @@ public class ParkingManager : MonoBehaviour
 {
     public static ParkingManager instance;
     public List<ParkingSlots> slots;
+    public List<ParkingSlots> slotsAll;
     public List<Vehicle> parkedVehicles;
     public Sprite sprVip = null;
     public Sprite sprSlotCurrent = null;
@@ -37,6 +38,17 @@ public class ParkingManager : MonoBehaviour
         return null;
     }
 
+    public ParkingSlots GetItemAds()
+    {
+        for (int i = 0; i < slotsAll.Count; i++)
+        {
+            if (slotsAll[i].isItemAds)
+            {
+                return slotsAll[i];
+            }
+        }
+        return null;
+    }
     private void Update()
     {
 

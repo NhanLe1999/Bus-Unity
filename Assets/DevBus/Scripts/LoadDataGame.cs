@@ -56,7 +56,7 @@ public class LoadDataGame : SingletonMono<LoadDataGame>
 
                 var cpn = objIn.GetComponent<Vehicle>();
                 ga.vehicles.Add(cpn);
-                cpn.ChangeColor(bus.color);
+                cpn.ChangeColor(bus.color, false);
             }
         }
 
@@ -88,7 +88,7 @@ public class LoadDataGame : SingletonMono<LoadDataGame>
             }
 
             var cpn = objIn.GetComponent<Vehicle>();
-            cpn.ChangeColor(da.color);
+            cpn.ChangeColor(da.color, false);
             cpn.busPosData = da;
 
             if(gara != null)

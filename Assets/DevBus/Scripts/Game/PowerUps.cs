@@ -23,6 +23,7 @@ public class PowerUps : MonoBehaviour
     public int sortPlayerCost;
     public int VipPlayerCost;
     public int MoreSlot;
+    public int GameOverSlot;
 
     [SerializeField] TextMeshProUGUI title;
     [SerializeField] TextMeshProUGUI info;
@@ -32,6 +33,7 @@ public class PowerUps : MonoBehaviour
     [SerializeField] Sprite playerSortSprite;
     [SerializeField] Sprite vipVehicleSprite;
     [SerializeField] Sprite SlotSprite;
+    [SerializeField] Sprite SprGameOver;
 
     [SerializeField] GameObject panel;
     [SerializeField] GameObject background;
@@ -48,6 +50,7 @@ public class PowerUps : MonoBehaviour
     private bool isPanelClosed = false;
     private bool isInfoPlaying = false;
     public bool isUseSkillVip = false;
+    private bool isShowGameOver = false;
 
     Action currentCallback = null;
 
@@ -113,6 +116,12 @@ public class PowerUps : MonoBehaviour
             ClosePanel();
             Audio.Play(ScStatic.SFX_BUTTONSOUND);
             Vibration.Vibrate(30);
+
+            if(isShowGameOver)
+            {
+                isShowGameOver = false;
+                ShowOver();
+            }
         });
     }
 
@@ -143,6 +152,47 @@ public class PowerUps : MonoBehaviour
         ClosePanel();
         Vibration.Vibrate(30);
 
+    }
+
+    public void ShowGameOver()
+    {
+        var slot = ParkingManager.instance.GetItemAds();
+        LoadDataGame.Instance.IsPause = true;
+
+        if (slot == null)
+        {
+            ShowOver();
+        }
+        else
+        {
+            isShowGameOver = true;
+            txtCoin.text = GameOverSlot.ToString();
+
+            currentCallback = () => {
+                GameManager.instance.gameOver = false;
+                isShowGameOver = false;
+                this.StartCoroutine(onEnablePause());
+                ClosePanel();
+                Vibration.Vibrate(30);
+                slot.OnAdsSucess();
+            };
+
+            useWithCoinsButton.interactable = HelperManager.DataPlayer.TotalCoin >= GameOverSlot;
+            SetPowerUpPanel(PowerUp.gameOver, "Continue", "Get a new <color=green>parking space</color> to keep playing", SprGameOver);
+            useWithCoinsButton.onClick.AddListener(() => UsePowerUpWithCoins(GameOverSlot, () => {
+                GameManager.instance.gameOver = false;
+                isShowGameOver = false;
+                this.StartCoroutine(onEnablePause());
+                ClosePanel();
+                Vibration.Vibrate(30);
+                slot.OnAdsSucess();
+            }));
+        }
+    }
+
+    private void ShowOver()
+    {
+        UiManager.instance.TogglePanel(UiManager.instance.gameOverPanle, true);
     }
 
     public void OnSkillTrain()
@@ -387,5 +437,6 @@ public enum PowerUp
     ShuffleCar,
     SortPlayers,
     Vip,
-    Slot
+    Slot,
+    gameOver
 }

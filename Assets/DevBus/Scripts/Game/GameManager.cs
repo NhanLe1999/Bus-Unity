@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
         {
             gameOver = true;
             Audio.Play(ScStatic.SFX_FAIL_SOUND);
-            UiManager.instance.TogglePanel(UiManager.instance.gameOverPanle, true);
+            PowerUps.instance.ShowGameOver();
             Debug.Log("<color=red>Warning: Game Over</color>");
         }
     }
